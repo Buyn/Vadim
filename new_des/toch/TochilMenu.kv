@@ -1,0 +1,591 @@
+#:kivy 1.0
+#:import Factory kivy.factory.Factory
+# * creating new classes: :
+# ** Button : 
+# *** <Button100@Button> : 
+# <Button100@Button>: 
+#     size_hint: [None, None] 
+#     size: [100, 100] 
+# *** BBack@Button : 
+<BBack@Button>: 
+    text: '<< ' 
+    font_size: '100sp'
+    width: 5
+    size_hint: [None, None] 
+    size: [200, 150] 
+    background_color : [1, 1, 200, 1]
+    on_press: 
+        root.manager.transition.direction = 'right'
+        root.manager.current = 'mainmenu'
+# ** BoxLayout : 
+# *** HBox@BoxLayout : 
+<HBox@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: 10
+    padding: 20
+# *** VBox@BoxLayout : 
+<VBox@BoxLayout>:
+    orientation: 'vertical'
+    spacing: 10
+    padding: 20
+# ** AnchorLayout : 
+# *** AncL_rc@AnchorLayout : 
+<AncL_rc@AnchorLayout>:
+    anchor_x:'right' 
+    # anchor_y:'top'
+    anchor_y:'center'
+# *** AncL_lc@AnchorLayout : 
+<AncL_lc@AnchorLayout>:
+    anchor_x:'left' 
+    # anchor_y:'top'
+    anchor_y:'center'
+# *** AncL_cb@AnchorLayout : 
+<AncL_cb@AnchorLayout>:
+    anchor_x:'center' 
+    anchor_y:'bottom'
+# *** AncL_ct@AnchorLayout : 
+<AncL_ct@AnchorLayout>:
+    anchor_x:'center' 
+    anchor_y:'top'
+# *** AncL_cc@AnchorLayout : 
+<AncL_cc@AnchorLayout>:
+    anchor_x:'center' 
+    anchor_y:'center'
+# ** CheckBox : 
+<CboxAnc@BoxLayout>
+    orientation: 'horizontal'
+    padding: 20
+    on_touch_down: if (not diod_cheker.active): diod_cheker.active=True; print('down')
+    AnchorLayout:
+        anchor_x:'right' 
+        anchor_y:'center'
+        CheckBox:
+            id: diod_cheker
+            text: 'Diod line' 
+            size_hint: (0.4, 0.4)
+# * <Interface>: :
+# ** ---<Interface>:-------------------------------:
+<Interface>:
+    ScreenManager:
+        OptionScreen:
+            name: "optionscreen" 
+        TimerScreen:
+            name: "timerscreen" 
+        MainScreen:
+            name: "mainmenu" 
+        SharpScreen:
+            name: "sharpmenu" 
+        ProcessScreen:
+            name: "processscreen" 
+        ConformSharpeningScreen:
+            name: "conformsharpeningscreen" 
+
+# * <MainScreen>: :
+# ** ------------------MainScreen----------------:
+<MainScreen>:
+    label_timeid: curent_time_label
+    label_dateid: curent_date_label
+    label_timerid: curent_timer_label
+    BoxLayout:
+        orientation: 'horizontal'
+
+# ** BoxLayout Sharping : 
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 50
+
+            Button:
+                text: 'Start Sharpening' 
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'sharpmenu'
+
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 0
+
+                Button:
+                    # text: 'Repit Last' + root.info
+                    text: 'Timer'
+                    # on_press: root.do_action()
+                    on_press:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'timerscreen'
+                    # on_press: Factory.StartSharpPopup().open()
+
+                Label:
+                    id: curent_timer_label
+                    color : [1, 1, 200, 1]
+                    font_size: '50sp'
+                    text: ' '
+
+
+# ** BoxLayout Radio Asistent : 
+        BoxLayout:
+        # FloatLayout:
+            orientation: 'vertical'
+            # orientation: 'horizontal'
+            padding: 50
+
+            Button:
+                text: 'Google Asistent' 
+                on_press: root.do_action()
+
+            Button:
+                # text: 'Radio' + root.info
+                text: 'Radio'
+                on_press: root.do_action()
+
+            Label:
+                id: curent_date_label
+                font_size: '25sp'
+                text: 'Augus/25/2020'
+
+            Label:
+                id: curent_time_label
+                font_size: '50sp'
+                text: root.info
+
+            Button:
+                text: 'Options' 
+                on_press:
+                    root.manager.transition.direction = 'up'
+                    root.manager.current = 'optionscreen'
+
+# ** ----------------------------------------------:
+
+
+# * <TimerScreen>: :
+# ** ------------------TimerScreen----------------:
+<TimerScreen>:
+    # label_Hours: widgets_label_Hours
+    # label_Minuts: widgets_label_Minuts
+    # label_Secunds: widgets_label_Secunds
+    BoxLayout:
+        orientation: 'vertical'
+
+# ** BoxLayout Timer Scrols : 
+        BoxLayout:
+            orientation: 'horizontal'
+            # padding: 20
+
+# *** BoxLayout Hours : 
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 5
+
+                Label:
+                    text: 'Hours'
+                    font_size: '30sp'
+                    size_hint: [1,0.2]
+                Button:
+                    text: '+'
+                    font_size: '50sp'
+                    on_press: 
+                        if int(widgets_label_Hours.text ) >= 0: widgets_label_Hours.text = str(int(widgets_label_Hours.text )  + 1)
+                        else : widgets_label_Hours.text = "00"
+
+                Label:
+                    id: widgets_label_Hours
+                    font_size: '100sp'
+                    text: '00'
+
+                Button:
+                    text: '-'
+                    font_size: '50sp'
+                    on_press: 
+                        if int(widgets_label_Hours.text ) > 1: widgets_label_Hours.text = str(int(widgets_label_Hours.text )  - 1)
+                        else : widgets_label_Hours.text = "00"
+
+# *** BoxLayout Minuts : 
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 5
+
+                Label:
+                    text: 'Minuts'
+                    font_size: '30sp'
+                    size_hint: [1,0.2]
+
+                Button:
+                    text: '+'
+                    font_size: '50sp'
+                    on_press: 
+                        if int(widgets_label_Minuts.text ) >= 0: widgets_label_Minuts.text = str(int(widgets_label_Minuts.text )  + 1)
+                        else : widgets_label_Minuts.text = "00"
+
+                Label:
+                    id: widgets_label_Minuts
+                    font_size: '100sp'
+                    text: '00'
+
+                Button:
+                    text: '-'
+                    font_size: '50sp'
+                    on_press: 
+                        if int(widgets_label_Minuts.text ) > 1: widgets_label_Minuts.text = str(int(widgets_label_Minuts.text )  - 1)
+                        else : widgets_label_Minuts.text = "00"
+
+# *** BoxLayout Secunds : 
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 5
+
+                Label:
+                    # id: curent_date_label
+                    text: 'Secunds'
+                    font_size: '30sp'
+                    size_hint: [1,0.2]
+
+                Button:
+                    # text: 'Repit Last' + root.info
+                    text: '+'
+                    font_size: '50sp'
+                    # on_press: root.do_action()
+                    on_press: 
+                        if int(widgets_label_Secunds.text ) >= 0: widgets_label_Secunds.text = str(int(widgets_label_Secunds.text )  + 1)
+                        else : widgets_label_Secunds.text = "00"
+
+                Label:
+                    id: widgets_label_Secunds
+                    font_size: '100sp'
+                    text: '00'
+
+                Button:
+                    # text: 'Repit Last' + root.info
+                    text: '-'
+                    font_size: '50sp'
+                    # on_press: root.do_action()
+                    on_press: 
+                        if int(widgets_label_Secunds.text ) > 1: widgets_label_Secunds.text = str(int(widgets_label_Secunds.text )  - 1)
+                        else : widgets_label_Secunds.text = "00"
+
+# ** BoxLayout Buttons : 
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: 20
+            spacing: 20
+            size_hint: [1,0.5]
+            Button:
+                text: 'Start Timer' 
+                font_size: '50sp'
+                background_color : [1, 200, 1, 1]
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'mainmenu'
+                    root.start_timer(d_hours = int(widgets_label_Hours.text), d_minutes = int(widgets_label_Minuts.text), d_seconds = int(widgets_label_Secunds.text))
+            Button:
+                # text: 'Radio' + root.info
+                text: 'Cancel'
+                font_size: '50sp'
+                background_color : [200, 1, 1, 1]
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'mainmenu'
+                    root.stop_Timer()
+
+# ** ----------------------------------------------:
+
+
+# * <SharpScreen>: :
+# ** ------------------SharpScreen----------------:
+<SharpScreen>:
+    ceram_chekerid: ceram_cheker
+    antibacterial_chekerid: antibacterial_cheker
+    antibacterial_Lid: antibacterial_L
+    ceramics_Lid: cramics_L
+    BoxLayout:
+        # orientation: 'horizontal'
+        orientation: 'vertical'
+
+
+# ** BoxLayout start cicles : 
+        BoxLayout:
+            # orientation: 'vertical'
+            orientation: 'horizontal'
+            padding: 5
+            ToggleButton:
+                group: 'cicle'
+                text: 'Full Cicle' 
+                on_press: root.chenge_list(add = ("Full Cicle"), remove = ("Midle Cicle"))
+            ToggleButton:
+                # text: 'Repit Last' + root.info
+                state: 'down'
+                group: 'cicle'
+                text: 'Midle Cicle'
+                on_press: root.chenge_list(add = ("Midle Cicle"), remove = ("Full Cicle"))
+
+# ** BoxLayout back , next & CboxAnc: 
+        HBox:
+# *** Button '<<': 
+            Button:
+                text: '<<' 
+                font_size: '100sp'
+                width: 5
+                size_hint: [None, None] 
+                size: [200, 150] 
+                background_color : [1, 1, 200, 1]
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'mainmenu'
+# *** CboxAnc : 
+            VBox:
+# **** Ceramic knife CheckBox: 
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: 10
+                    padding: 20
+                    id: cramics_L
+                    AncL_rc:
+                        CheckBox:
+                            id: ceram_cheker
+                            text: 'Ceramic knife' 
+                            size_hint: (0.4, 0.4)
+                            on_press: root.ceram_cheker_rutin()
+                    AncL_cc:
+                        Label:
+                            size_hint: (0.3, 0.3)
+                            text: 'Ceramic knife' 
+# **** Antibacterial CheckBox: 
+                BoxLayout:
+                    orientation: 'horizontal'
+                    spacing: 10
+                    padding: 20
+                    id: antibacterial_L
+                    AncL_rc:
+                        CheckBox:
+                            id: antibacterial_cheker
+                            text: 'Antibacterial cicle' 
+                            size_hint: (0.4, 0.4)
+                            on_press: root.antibacterial_cheker_rutin()
+                    AncL_cc:
+                        Label:
+                            size_hint: (0.3, 0.3)
+                            text: 'Antibacterial cicle' 
+                            # on_touch_down: root.do_action(self.text, self.events())
+                            # on_touch_down: if (not antibacterial_cheker.active): antibacterial_cheker.active=True; print('down')
+# *** Button 'ok': 
+            Button:
+                text: 'ok' 
+                font_size: '100sp'
+                width: 5
+                size_hint: [None, None] 
+                size: [200, 150] 
+                background_color : [1, 200, 1, 1]
+                on_press: 
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'conformsharpeningscreen'
+                    # root.do_action(("Full cicle","Antibacterial", "Too sides"))
+                    root.start()
+# ** BoxLayout Left right side : 
+        BoxLayout:
+            orientation: 'vertical'
+            ToggleButton:
+                group: 'sides'
+                text: 'Both Sides' 
+                on_press: root.chenge_list(add = ("Both Sides"), remove = ("Right Side", "Left Side"))
+            BoxLayout:
+                orientation: 'horizontal'
+                ToggleButton:
+                    group: 'sides'
+                    state: 'down'
+                    text: 'Left Side' 
+                    on_press: root.chenge_list(add = ("Left Side"), remove = ("Right Side", "Both Sides"))
+                ToggleButton:
+                    group: 'sides'
+                    text: 'Right Side'
+                    on_press: root.chenge_list(add = ("Right Side"), remove = ("Both Sides", "Left Side"))
+
+# ** ----------------------------------------------:
+# * <ConformSharpeningScreen>: :
+# ** ------------------ConformSharpeningScreen----------------:
+<ConformSharpeningScreen>:
+    list_of_comformationid: list_of_comformation
+    VBox
+# ** Title : 
+        Label:
+            # id: curent_date_label
+            size_hint: [0.5, 0.1] 
+            font_size: '30sp'
+            text: 'List of selected regims:'
+# ** Sets filde : 
+        VBox
+            size_hint: [0.9, 1] 
+            canvas: 
+                Color: 
+                    # rgb: .45, .28, .5
+                    rgb: .20, .20, .20
+                Rectangle: 
+                    pos: self.pos 
+                    size: self.size 
+            Label:
+                id: list_of_comformation
+                font_size: '20sp'
+                text: 'Full cicle'
+
+# ** BoxLayout Buttons : 
+        HBox:
+            size_hint: [1, 0.5] 
+            padding: 1
+            Button:
+                text: '<<' 
+                font_size: '100sp'
+                # width: 5
+                size_hint: [0.5, 1] 
+                # size: [200, 150] 
+                background_color : [1, 1, 200, 1]
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'sharpmenu'
+            VBox:
+                padding: 0
+                Button: 
+                    text: 'START' 
+                    background_color : [1, 200, 1, 1]
+                    on_press: 
+                        root.manager.transition.direction = 'left'
+                        root.manager.current = 'processscreen'
+                        root.start()
+                Button:
+                    text: 'Back to select' 
+                    background_color : [1, 1, 200, 1]
+                    on_press: 
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'sharpmenu'
+# ** ----------------------------------------------:
+# * <ProcessScreen>: :
+# ** ------------------ProcessScreen----------------:
+<ProcessScreen>:
+    label_timeid: curent_time_label
+    label_dateid: curent_date_label
+    progressbarid: widget_progressbar
+    progress_text_labelid: progress_text_label
+    finishButton: widget_finishButton
+    VBox
+# ** Title : 
+        HBox
+            size_hint: [1, 0.3] 
+            Label:
+                # id: curent_date_label
+                size_hint: [0.5, 1] 
+                font_size: '30sp'
+                id: curent_date_label
+                text: '12/20/2020 '
+            Label:
+                # id: curent_date_label
+                size_hint: [0.5, 1] 
+                font_size: '50sp'
+                text: root.info
+                text: ' 08:10:45'
+                id: curent_time_label
+
+# ** Progress Bar : 
+        VBox
+            ProgressBar:
+                value: 0
+                # color : [1, 1, 200, 1]
+                id: widget_progressbar
+            Label:
+                id: progress_text_label
+                font_size: '30sp'
+                text: 'Polishing'
+
+# ** Buttons : 
+        Button:
+            text: 'Cancel' 
+            font_size: '100sp'
+            # width: 5
+            size_hint: [1, 0.5] 
+            # size: [200, 150] 
+            background_color : [200, 1, 1, 1]
+            id: widget_finishButton
+            on_press: 
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'mainmenu'
+# ** ----------------------------------------------:
+# * <OptionScreen>: :
+# ** ------------------OptionScreen----------------:
+<OptionScreen>:
+    diod_cheker_id: diod_cheker
+    diod_layout_id: diod_layout
+    BoxLayout:
+        # orientation: 'horizontal'
+        orientation: 'vertical'
+
+
+# ** BoxLayout check boxes  end back: 
+        BoxLayout:
+            # orientation: 'vertical'
+            orientation: 'horizontal'
+            padding: 20
+# *** Button: '<< ' : 
+            Button:
+                text: '<< ' 
+                # size: (160, 120)
+                # text_size: self.size
+                # text_size: root.width, None
+                # size: self.texture_size
+                size_hint: (0.5, 0.5)
+                font_size: '100sp'
+                width: 5
+                # markup: True
+                # text_size:  None, None
+                background_color : [1, 1, 200, 1]
+                on_press: 
+                    root.manager.transition.direction = 'down'
+                    root.manager.current = 'mainmenu'
+# *** CheckBox : 
+            BoxLayout:
+                orientation: 'horizontal'
+                padding: 20
+                id: diod_layout
+                # on_touch_down: if (not diod_cheker.active): diod_cheker.active=True; print('down')
+                AnchorLayout:
+                    anchor_x:'right' 
+                    # anchor_y:'top'
+                    anchor_y:'center'
+                    CheckBox:
+                        id: diod_cheker
+                        text: 'Diod line' 
+                        size_hint: (0.3, 0.9)
+                        # on_press: root.togle_diod_cheker()
+                AnchorLayout:
+                    anchor_x:'left' 
+                    anchor_y:'center'
+                    # anchor_y:'top'
+                    Label:
+                        # size_hint_x: None
+                        text: 'Diod line' 
+                        size_hint: (0.1, 0.1)
+
+# ** BoxLayout Slider : 
+        BoxLayout:
+            # orientation: 'vertical'
+            orientation: 'horizontal'
+            padding: 5
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 5
+                AncL_cb:
+                    Label:
+                        text: 'Speech comformatio' 
+                AncL_ct:
+                    Slider:
+                        min: 0
+                        max: 100
+                        value: 50
+                        size_hint_y: None
+                        height: 50
+                        on_value: comformatio_value_label.text = str(int(self.value)) + "%"
+            Label:
+                # text: 'Repit Last' + root.info
+                text: '50%'
+                id: comformatio_value_label
+                font_size: '100sp'
+                width: 5
+                # on_press: root.do_action()
+
+
+# ** ----------------------------------------------:

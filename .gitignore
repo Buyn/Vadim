@@ -1,0 +1,9 @@
+.project
+.pydevproject
+virtualenv/
+*.swp
+*.org
+__pycache__
+*.pyc
+*.swo
+.kivy
