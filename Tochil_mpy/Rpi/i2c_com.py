@@ -1,9 +1,11 @@
 # * imports : 
 import sys
 from i2c_rpi_driver import *
+from stepmotor_rpi_driver import *
 
 # * vars :
 stm = i2c_device(0x40, 1)
+sm1 = stepmotor_rpi_driver(i2c_device(0x40, 1), 1)
 
 # * main :
 def main(argv):
@@ -19,6 +21,15 @@ def main(argv):
     if argv[1] == "i2c_s":
         print ("start i2c 2simbol rutin")
         stm.send_simbol(argv[2])
+# ** sm1 : 
+    if argv[1] == "sm1":
+        print ("send step motor command")
+        sm1.steps(argv[2])
+# ** wca : 
+    if argv[1] == "wca":
+        print ("send command and arguments")
+        print("stm.write_cmd_arg(argv[2], argv[3], [argv[4], argv[5]]) = ", argv[2], argv[3], [argv[4], argv[5]])
+        stm.write_cmd_arg(int(argv[2]), int(argv[3]), [argv[4], argv[5]])
 # ** i2c_b : 
     if argv[1] == "i2c_b":
         print ("start i2c block rutin")

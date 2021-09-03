@@ -5,7 +5,7 @@ import sys
 from unittest.mock import MagicMock, patch
 
 sys.modules['micropython'] = MagicMock()
-from driver_m import *
+from stm_main import *
 
 # ----------------------------------------------
 # * class Test_Init : 
@@ -22,11 +22,12 @@ class Test_Init(unittest.TestCase):
     def test_init1(self):# {{{
         mw = None
         self.assertIsNone( mw)
-        mw = Step_Driver(pyb.Pin.cpu.C13)
+        mw = I2C_com()
         # temp_A = 11
         # temp_B = 14
         self.assertIsNotNone( mw)
-        self.assertIsNotNone( mw.pin)
+        self.assertIsNotNone( mw.i2c)
+        self.assertIsNotNone( mw.pinOut01)
         # self.assertEqual( mw.pin, 'PC13')
         # self.assertEqual( mw.temp_B, 14)
 
@@ -45,7 +46,7 @@ class Test_Fun(unittest.TestCase):
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
-        self.sd = Step_Driver(pyb.Pin.cpu.C13)
+        self.sd = I2C_com()
         # self.mw = Main_Windows()
         #     print ("file opened")
         # print("*"*33,"*"*33)
@@ -61,38 +62,35 @@ class Test_Fun(unittest.TestCase):
         print("*"*33,"*"*33)
 
 # ----------------------------------------------
-# ** def test_step(self):
-    def test_step(self):
-        self.sd.step()
+# ** def test_print_in(self):
+    def test_print_in(self):
+        self.sd.print_in()
 
-# ** def test_step_on(self):
-    def test_step_on(self):
-        self.sd.step_on(10, 1000)
+# ** def test_diode_com(self):
+    def test_diode_com(self):
+        self.sd.diode_com()
 
-# ** def test_StarComform(self):
-    def test_StarComform(self):
-        test = ConformSharpeningScreen()
-        # print("main_menu_timer_label =", main_menu_timer_label)
-        result = test.make_comform_list_string( ("New!", "test", "test!"))
-        self.assertEqual( result, ' New!\n test\n test!\n ')
+# ** def test_i2c_exec(self):
+    def test_i2c_exec(self ):
+        self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
+        self.sd.i2c_exec( b'\x13')
+        self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
+        self.sd.i2c_exec( b'\x10')
+        self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
+        self.sd.i2c_exec( b'\x13')
+        self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
+        # self.assertEqual( result, ' New!\n test\n test!\n ')
 
 
-
-# ** def test_Sharp_cheng(self):
-    def test_Sharp_cheng(self):
-        test = SharpScreen()
-        # print("main_menu_timer_label =", main_menu_timer_label)
-        self.assertIsNotNone(test.list_of_chosens)
-        test.chenge_list( add = ("New!", "test", "test!"), remove = ("Full cicle", "sdf"))
-        tuple_var = ("Full cicle", "sdf")
-        print(type(tuple_var))
-        if isinstance(tuple_var, tuple) : print ("It Tuple")
-        else: print ("Not Tuple")
-        test.chenge_list()
-        self.assertEqual( test.list_of_chosens, { 'Too sides', 'Antibacterial', "New!", "test", "test!"})
-        test.chenge_list( add = ("Full cicle"), remove = ("test"))
-        # print (test.list_of_chosens)
-        self.assertEqual( test.list_of_chosens, { 'Too sides', 'Antibacterial', "New!", "Full cicle", "test!"})
+# ** def test_i2c_2s_send(self):
+    def test_i2c_2s_send(self):
+        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
+        self.sd.i2c_2s_send( )
+        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
+        # self.sd.i2c_exec( 10)
+        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
+        # self.sd.i2c_exec( 13)
+        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
 
 
 
@@ -100,11 +98,12 @@ class Test_Fun(unittest.TestCase):
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    # suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_step'))
-    suite.addTest(Test_Fun('test_step_on'))
-    # suite.addTest(Test_Fun('test_Sharp_cheng'))
-    # suite.addTest(WidgetTestCase('test_widget_resize'))
+    suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Fun('test_i2c_exec'))
+    # infiniti loop
+    # suite.addTest(Test_Fun('test_i2c_2s_send'))
+    # suite.addTest(Test_Fun('test_print_in'))
+    # suite.addTest(Test_Fun('test_diode_com'))
     return suite
 # ----------------------------------------------
 
