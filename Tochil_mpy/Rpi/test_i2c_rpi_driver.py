@@ -25,7 +25,8 @@ class Test_Init(unittest.TestCase):
         mw = i2c_device( 13, 1)
         self.assertIsNotNone( mw)
         self.assertIsNotNone( mw.bus)
-        # self.assertEqual( mw.pin, 'PC13')
+        self.assertIsNotNone( mw.cmd_list)
+        self.assertEqual( len(mw.cmd_list), 0)
         # self.assertEqual( mw.temp_B, 14)
 
             				
@@ -63,9 +64,18 @@ class Test_Fun(unittest.TestCase):
     def test_write_cmd(self):
         self.sd.write_cmd( 13 )
 
-# ** def test_write_cmd(self):
+# ** def test_write_cmd_arg(self): : 
     def test_write_cmd_arg(self):
         self.sd.write_cmd_arg( 1, 13, [13, 14 ] )
+
+# ** def test_wr_cmd_arg(self): : 
+    def test_wr_cmd_arg(self):
+        # print (list(range(11))[::-1])
+        r = self.sd.rdwr_cmd_arg( 1, 13, [13, 14 ] )
+        # self.assertEqual( int.from_bytes(r.buf[0], "big"), 10)
+        # self.assertEqual( int.from_bytes(r.buf[0], "big"), 10)
+        self.assertEqual( r[0], 10)
+
 
 # ** def test_send_2_simbol(self):
     def test_send_2_simbol(self):
@@ -113,6 +123,7 @@ def suite_Init():
     suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_send_resiv'))
     suite.addTest(Test_Fun('test_write_cmd_arg'))
+    suite.addTest(Test_Fun('test_wr_cmd_arg'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))

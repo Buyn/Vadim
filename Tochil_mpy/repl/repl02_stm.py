@@ -1,5 +1,17 @@
 D:\shell\Putty\putty.exe -serial com16
 # -----------------------------------
+from stm_main import *
+mainloop()
+int.from_bytes([100,100], "big") 
+# -----------------------------------
+from i2c_stm_driver import *
+sd = I2C_com()
+sd.get_msg()
+# -----------------------------------
+from i2c_stm_driver import *
+sd = I2C_com()
+sd.i2c_2s_send()
+# -----------------------------------
 from i2c_stm_driver import *
 sd = I2C_com()
 sd.print_in()

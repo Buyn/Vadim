@@ -35,14 +35,22 @@ class Test_Init(unittest.TestCase):
 # ----------------------------------------------
 # ** ----------------------------------------------:
 # * class Test_Fun(unittest.TestCase): : 
-# ** ----------------------------------------------:
+# ** -class----------------------------------------:
 class Test_Fun(unittest.TestCase):
+
+
+# ----------------------------------------------
+# ** test_load_image : 
+# ----------------------------------------------
     @patch('micropython.alloc_emergency_exception_buf')
     def test_load_image(self, imread):
         print('alloc_emergency_exception_buf=', imread)
         assert imread.called
 
+
+# ----------------------------------------------
 # ** @classmethod #setUpClass#  : 
+# ----------------------------------------------
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
@@ -54,6 +62,7 @@ class Test_Fun(unittest.TestCase):
         
 # ----------------------------------------------
 # ** @classmethod #tearDownClass# : 
+# ----------------------------------------------
     @classmethod #tearDownClass# {{{
     def tearDownClass(self):
         print("*"*33,"*"*33)
@@ -61,15 +70,36 @@ class Test_Fun(unittest.TestCase):
         self.sd = None
         print("*"*33,"*"*33)
 
+
 # ----------------------------------------------
 # ** def test_print_in(self):
+# ----------------------------------------------
     def test_print_in(self):
         self.sd.print_in()
 
+
+# ----------------------------------------------
+# ** def test_get_msg (self):
+# ----------------------------------------------
+    def test_get_msg (self):
+        # self.sd.i2c.DATA_TO_RESIV = [4,5,6,7]
+        self.assertEqual(0,len(self.sd.msg_list))
+        self.sd.get_msg()
+        # print(self.sd.msg_list)
+        self.assertEqual(1,len(self.sd.msg_list))
+        self.assertEqual(1,self.sd.msg_list[0][0])
+        # self.sd.get_msg()
+        # self.assertEqual(1,self.sd.msg_list[0])
+
+
+# ----------------------------------------------
 # ** def test_diode_com(self):
+# ----------------------------------------------
     def test_diode_com(self):
         self.sd.diode_com()
 
+
+# ----------------------------------------------
 # ** def test_i2c_exec(self):
     def test_i2c_exec(self ):
         self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
@@ -82,11 +112,24 @@ class Test_Fun(unittest.TestCase):
         # self.assertEqual( result, ' New!\n test\n test!\n ')
 
 
-# ** def test_i2c_2s_send(self):
-    def test_i2c_2s_send(self):
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
-        self.sd.i2c_2s_send( )
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
+# **  def test_rutine(self): : 
+    def test_rutine(self):
+        self.sd.msg_list = []
+        self.assertEqual( len(self.sd.msg_list), 0 )
+        self.assertEqual( self.sd.rutin(), None )
+        self.sd.get_msg()
+        self.assertEqual( len(self.sd.msg_list), 1 )
+        self.assertEqual( self.sd.rutin(),  b'\x01\x02\x03\x04\x05')
+        self.assertEqual( len(self.sd.msg_list), 0 )
+        self.assertEqual( self.sd.rutin(), None )
+        self.sd.get_msg()
+        b = self.sd.rutin()
+        print(int.from_bytes([b[0],b[1]], "big") )
+        print(int.from_bytes([b[0],b[1]], "little") )
+        print(int.from_bytes([1,0], "big") )
+        print(int.from_bytes([1,0], "little") )
+        r = int(str(100) +str(100))
+        print(r)
         # self.sd.i2c_exec( 10)
         # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
         # self.sd.i2c_exec( 13)
@@ -98,8 +141,9 @@ class Test_Fun(unittest.TestCase):
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_i2c_exec'))
+    # suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Fun('test_get_msg'))
+    suite.addTest(Test_Fun('test_rutine'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))

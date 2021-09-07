@@ -1,6 +1,7 @@
 # ----------------------------------------------
 # * import block# :
 import smbus2
+# from smbus2 import SMBus, i2c_msg
 from time import sleep
 
 # ----------------------------------------------
@@ -19,6 +20,7 @@ class i2c_device:
    def __init__(self, addr, port=I2CBUS):
       self.addr = addr
       self.port = port
+      self.cmd_list = []
       self.bus = smbus2.SMBus(port)
 
 
@@ -45,9 +47,22 @@ class i2c_device:
           # data = [1, 2, 3, 4, 5, 6, 7, 8]
           # bus.write_i2c_block_data(80, 0, data)
           bus.write_i2c_block_data(self.addr, 0,
-                        [dev, cmd, int(data[0]), int(data[1])])
+                        [dev, cmd, data[0], data[1]])
 
 
+#  ----------------------------------------------:
+# **  Write and read a command and argument : 
+   def rdwr_cmd_arg(self, dev, cmd, data):
+      # # Single transaction writing two bytes then read two at address 80
+      write = smbus2.i2c_msg.write(self.addr, [5, dev, cmd, data[0], data[1]])
+      read = smbus2.i2c_msg.read(self.addr, 1)
+      with smbus2.SMBus(self.port) as bus:
+          bus.i2c_rdwr(write, read)
+          # return bus.i2c_rdwr(write, read)
+          return list(read)
+          # return bus.read_byte_data(self.addr, 0)
+
+          
 #  ----------------------------------------------:
 # **  Write a block of data :
    def write_block_data(self, cmd, data):

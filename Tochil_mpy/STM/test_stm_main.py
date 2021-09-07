@@ -61,15 +61,23 @@ class Test_Fun(unittest.TestCase):
         self.sd = None
         print("*"*33,"*"*33)
 
+
 # ----------------------------------------------
-# ** def test_print_in(self):
-    def test_print_in(self):
-        self.sd.print_in()
+# **  def test_mainloop(self): : 
+# ----------------------------------------------
+    def test_mainloop(self):
+        mainloop(test = True)
 
-# ** def test_diode_com(self):
-    def test_diode_com(self):
-        self.sd.diode_com()
 
+# ----------------------------------------------
+# ** def test_cmd_rutine(self): : 
+# ----------------------------------------------
+    def test_cmd_rutine(self):
+        rpi.get_msg()
+        cmd_rutin(rpi.rutin())
+
+
+# ----------------------------------------------
 # ** def test_i2c_exec(self):
     def test_i2c_exec(self ):
         self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
@@ -99,7 +107,8 @@ class Test_Fun(unittest.TestCase):
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_i2c_exec'))
+    suite.addTest(Test_Fun('test_mainloop'))
+    suite.addTest(Test_Fun('test_cmd_rutine'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))

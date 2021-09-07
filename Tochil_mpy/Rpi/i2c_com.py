@@ -30,6 +30,12 @@ def main(argv):
         print ("send command and arguments")
         print("stm.write_cmd_arg(argv[2], argv[3], [argv[4], argv[5]]) = ", argv[2], argv[3], [argv[4], argv[5]])
         stm.write_cmd_arg(int(argv[2]), int(argv[3]), [argv[4], argv[5]])
+# ** rdwr : 
+    if argv[1] == "rdwr":
+        print ("send and resiv command and arguments")
+        print("stm.write_cmd_arg(argv[2], argv[3], [argv[4], argv[5]]) = ", argv[2], argv[3], [argv[4], argv[5]])
+        r = stm.rdwr_cmd_arg(int(argv[2]), int(argv[3]), [int(argv[4]), int(argv[5])])
+        print ("resiv = ", r)
 # ** i2c_b : 
     if argv[1] == "i2c_b":
         print ("start i2c block rutin")

@@ -1,3 +1,6 @@
+DATA_TO_RESIV = bytes([1,2,3,4,5,6,7,8,9,])
+
+# * static :
 def delay(ms):
     """
     Delay for the given number of milliseconds.
@@ -151,7 +154,7 @@ def usb_mode(modestr, vid=0xf055, pid=0x9801, hid=0):
     """
     pass
 
-
+# * class Accel: : 
 class Accel:
 
     def filtered_xyz(self):
@@ -190,7 +193,7 @@ class Accel:
     def read(self, register):
         pass
 
-
+# * class ADC: : 
 class ADC:
 
     def __init__(self, pin):
@@ -219,6 +222,8 @@ class ADC:
         """
         pass
 
+
+# * class CAN: : 
 class CAN:
 
     NORMAL = "NORMAL"
@@ -278,7 +283,9 @@ class CAN:
         """
         Receive data on the bus.
         """
+        # return DATA_TO_RESIV.pop(0)
         pass
+        # return "sdf"
 
     def send(data, id, timeout=0, rtr=False):
         """
@@ -292,7 +299,7 @@ class CAN:
         """
         pass
 
-
+# * class DAC: : 
 class DAC:
 
     NORMAL = "NORMAL"
@@ -339,7 +346,7 @@ class DAC:
         """
         pass
 
-
+# * class ExtInt: : 
 class ExtInt:
 
     IRQ_FALLING = "IRQ_FALLING"
@@ -383,7 +390,7 @@ class ExtInt:
         """
         pass
 
-
+# * class I2C: : 
 class I2C:
 
     MASTER = "MASTER"
@@ -430,7 +437,7 @@ class I2C:
         """
         Receive data on the bus.
         """
-        pass
+        return bytes([DATA_TO_RESIV[i] for i in range(recv)])
 
     def send(self, send, addr=0x00, timeout=5000):
         """
@@ -444,6 +451,8 @@ class I2C:
         """
         pass
 
+
+# * class LCD: : 
 class LCD:
 
     def __init__(self, skin_position):
@@ -509,6 +518,7 @@ class LCD:
         pass
 
 
+# * class LED: : 
 class LED:
     def __init__(self, id):
         """
@@ -539,13 +549,14 @@ class LED:
         """
         pass
 
-
+# * class _board(object): : 
 class _board(object):
     """ object has any attribute, returns 1 for requested attribute's value """
     def __getattr__(self, *args, **kwargs):
         return 1
 
 
+# * class Pin: : 
 class Pin:
 
     PIN_VALUE = True
@@ -675,6 +686,8 @@ class Pin:
         """
         pass
 
+
+# * class PinAF: : 
 class PinAF:
 
     def __str__(self):
@@ -703,6 +716,7 @@ class PinAF:
         pass
 
 
+# * class RTC: : 
 class RTC:
 
     def __init__(self):
@@ -736,6 +750,8 @@ class RTC:
         """
         pass
 
+
+# * class Servo: : 
 class Servo:
 
     def __init__(self, id):
@@ -771,6 +787,7 @@ class Servo:
         pass
 
 
+# * class SPI: : 
 class SPI:
 
     MASTER = "MASTER"
@@ -815,6 +832,7 @@ class SPI:
         pass
 
 
+# * class Switch: : 
 class Switch:
 
     def __init__(self):
@@ -835,6 +853,8 @@ class Switch:
         """
         pass
 
+
+# * class Timer: : 
 class Timer:
 
     def __init__(self, *args, **kwargs):
@@ -897,7 +917,7 @@ class Timer:
         """
         pass
 
-
+# * class TimerChannel: : 
 class TimerChannel:
 
     def callback(self, fun):
@@ -930,6 +950,7 @@ class TimerChannel:
         pass
 
 
+# * class UART: : 
 class UART:
 
     RTS = "RTS"
@@ -1008,6 +1029,8 @@ class UART:
         """
         pass
 
+
+# * class USB_HID: : 
 class USB_HID:
     """
     Create a new USB_HID object.
@@ -1025,6 +1048,8 @@ class USB_HID:
         """
         pass
 
+
+# * class USB_VCP: : 
 class USB_VCP:
 
     def __init__(self):
