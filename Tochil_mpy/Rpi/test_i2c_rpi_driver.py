@@ -64,9 +64,9 @@ class Test_Fun(unittest.TestCase):
     def test_write_cmd(self):
         self.sd.write_cmd( 13 )
 
-# ** def test_write_cmd_arg(self): : 
-    def test_write_cmd_arg(self):
-        self.sd.write_cmd_arg( 1, 13, [13, 14 ] )
+# ** def test_write_block_data(self): : 
+    def test_write_block_data(self):
+        self.sd.write_block_data( 14, 5)
 
 # ** def test_wr_cmd_arg(self): : 
     def test_wr_cmd_arg(self):
@@ -98,6 +98,12 @@ class Test_Fun(unittest.TestCase):
 
 
 
+# ** def test_msg_list_size(self):
+    def test_msg_list_size(self):
+       result = self.sd.msg_list_size()
+       self.assertEqual( result, 10)
+
+
 # ** def test_Sharp_cheng(self):
     def test_Sharp_cheng(self):
         test = SharpScreen()
@@ -122,8 +128,10 @@ def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_send_resiv'))
-    suite.addTest(Test_Fun('test_write_cmd_arg'))
-    suite.addTest(Test_Fun('test_wr_cmd_arg'))
+    # suite.addTest(Test_Fun('test_write_cmd_arg'))
+    suite.addTest(Test_Fun('test_write_block_data'))
+    # suite.addTest(Test_Fun('test_wr_cmd_arg'))
+    suite.addTest(Test_Fun('test_msg_list_size'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))

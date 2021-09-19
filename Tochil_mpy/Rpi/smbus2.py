@@ -143,7 +143,7 @@ class SMBus(object):
         :return: Read byte value
         :rtype: int
         """
-        return register
+        return  RETURN_DATA[0]
 
 
     def write_byte_data(self, i2c_addr, register, value, force=None):

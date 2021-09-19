@@ -1,4 +1,5 @@
 D:\shell\Putty\putty.exe -serial com16
+cd "D:\Development\version-control\GitHub\Vadim\Tochil_mpy"
 # -----------------------------------
 from stm_main import *
 mainloop()
@@ -10,7 +11,7 @@ sd.get_msg()
 # -----------------------------------
 from i2c_stm_driver import *
 sd = I2C_com()
-sd.i2c_2s_send()
+sd.i2c_2s_send(1)
 # -----------------------------------
 from i2c_stm_driver import *
 sd = I2C_com()

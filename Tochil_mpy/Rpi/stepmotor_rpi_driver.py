@@ -8,10 +8,11 @@ from i2c_rpi_driver import *
 
 #  ----------------------------------------------:
 # * Commands list block :
-CMD_STEPS = 10
+CMD_STEPS       = 10
+CMD_HOMERUN     = 100
 
 #  ----------------------------------------------:
-# * i2c_device: : 
+# * class stepmotor_rpi_driver: : 
 class stepmotor_rpi_driver:
 # ** __init__ : 
    def __init__(self, stm, motor):
@@ -33,4 +34,10 @@ class stepmotor_rpi_driver:
 
 
 #  ----------------------------------------------:
+# ** def homerun : 
+#  ----------------------------------------------:
+   def homerun(self): 
+      self._stm.write_cmd_arg(self._motor, CMD_HOMERUN, [0, 0])
+
+
 # * ----------------------------------------------:

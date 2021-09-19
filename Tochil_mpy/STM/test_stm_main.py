@@ -63,7 +63,7 @@ class Test_Fun(unittest.TestCase):
 
 
 # ----------------------------------------------
-# **  def test_mainloop(self): : 
+# ** def test_mainloop(self): : 
 # ----------------------------------------------
     def test_mainloop(self):
         mainloop(test = True)
@@ -73,8 +73,26 @@ class Test_Fun(unittest.TestCase):
 # ** def test_cmd_rutine(self): : 
 # ----------------------------------------------
     def test_cmd_rutine(self):
+        self.assertTrue(DEV_STEPMOTOR01 in DEV_SMS)
+        self.assertFalse(1 in DEV_SMS)
         rpi.get_msg()
-        cmd_rutin(rpi.rutin())
+        msg = rpi.rutin()
+        print(msg)
+        print(msg[2])
+        msg = bytes(b'\x05\x0A\x0A\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+        msg = bytes(b'\x05\x0B\x64\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+
+
+# ----------------------------------------------
+# ** def test_step_motor_rutine (self): : 
+# ----------------------------------------------
+    def test_step_motor_rutine (self):
+        step_motor_rutine(sm = sms[1], cmd = CMD_STEPS, data = [0, 100] )
+        step_motor_rutine(sm = sms[1], cmd = CMD_HOMERUN, data = [0, 100] )
 
 
 # ----------------------------------------------
@@ -109,6 +127,7 @@ def suite_Init():
     suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_mainloop'))
     suite.addTest(Test_Fun('test_cmd_rutine'))
+    suite.addTest(Test_Fun('test_step_motor_rutine'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))

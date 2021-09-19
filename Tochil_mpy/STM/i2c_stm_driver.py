@@ -78,7 +78,7 @@ class I2C_com(object):
 
 # ----------------------------------------------
 # ** def i2c_2s_send : 
-    def i2c_2s_send(self, byt =5):
+    def i2c_2s_send(self, byt =1):
         while True:
             try:
                 # data = i2c_slave.recv(4)

@@ -5,7 +5,7 @@ import sys
 from unittest.mock import MagicMock, patch
 
 sys.modules['micropython'] = MagicMock()
-from stepmotor_rpi_driver import *
+from Port_drv_rpi import *
 
 # ----------------------------------------------
 # * class Test_Init : 
@@ -22,12 +22,12 @@ class Test_Init(unittest.TestCase):
     def test_init1(self):# {{{
         mw = None
         self.assertIsNone( mw)
-        mw = stepmotor_rpi_driver( i2c_device(13, 1), 1)
+        mw = Port_drv_rpi( i2c_device(13, 1))
         self.assertIsNotNone( mw)
-        self.assertIsNotNone( mw._stm)
-        self.assertIsNotNone( mw._motor)
+        self.assertIsNotNone( mw._i2c)
+        self.assertEqual( mw._valueA, bytearray(8))
+        self.assertEqual( mw._valueB, bytearray(8))
         # self.assertEqual( mw.pin, 'PC13')
-        # self.assertEqual( mw.temp_B, 14)
 
             				
 # ----------------------------------------------
@@ -44,7 +44,7 @@ class Test_Fun(unittest.TestCase):
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
-        self.sd = stepmotor_rpi_driver( i2c_device(13, 1), 1)
+        self.test = Port_drv_rpi( i2c_device(13, 1))
         # self.mw = Main_Windows()
         #     print ("file opened")
         # print("*"*33,"*"*33)
@@ -60,28 +60,44 @@ class Test_Fun(unittest.TestCase):
         print("*"*33,"*"*33)
 
 # ----------------------------------------------
-# ** def test_steps(self):
-    def test_steps(self):
-        print(self.sd.steps(100))
-        print(self.sd.steps(1000))
-        print(self.sd.steps(10000))
-        print(self.sd.steps(100000))
-        print(self.sd.steps(1000000))
+# ** def test_set(self): : 
+    def test_set(self):
+        self.assertFalse( self.test._valueA[0])
+        self.test.set(A1, True)
+        self.assertEqual( self.test._valueA[0], 1)
+        self.assertEqual( self.test._valueB[0], 0)
+        self.test.set(B5, True)
+        # print(self.test._valueA)
+        # print(self.test._valueB)
+        self.assertEqual( self.test._valueB[4], 1)
 
 
-# ** def test_homerun(self):
-# ----------------------------------------------
-    def test_homerun(self):
-        self.sd.homerun()
-#  ----------------------------------------------:
+# ** def test_value(self): : 
+    def test_value(self):
+        self.test.set(A1, 0)
+        self.test.set(B1, 0)
+        # print(self.test._valueA)
+        # print(self.test._valueB)
+        self.assertFalse(self.test.value(A1))
+        self.test.set(A1, 1)
+        self.assertTrue(self.test.value(A1))
+        self.assertFalse(self.test.value(B1))
+        self.test.set(B1, True)
+        self.assertTrue(self.test.value(B1))
+        # self.assertEqual( self.test._valueA[0], 1)
+        # self.assertEqual( self.test._valueB[0], 0)
+        # print(self.test._valueA)
+        # print(self.test._valueB)
+        # self.assertEqual( self.test._valueB[4], 1)
+
 
 # ** ----------------------------------------------:
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_steps'))
-    suite.addTest(Test_Fun('test_homerun'))
+    suite.addTest(Test_Fun('test_set'))
+    suite.addTest(Test_Fun('test_value'))
     # suite.addTest(Test_Fun('test_Sharp_cheng'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop

@@ -46,7 +46,7 @@ class i2c_device:
           # Write a block of 8 bytes to address 80 from offset 0
           # data = [1, 2, 3, 4, 5, 6, 7, 8]
           # bus.write_i2c_block_data(80, 0, data)
-          bus.write_i2c_block_data(self.addr, 0,
+          bus.write_i2c_block_data(self.addr, 5,
                         [dev, cmd, data[0], data[1]])
 
 
@@ -66,8 +66,8 @@ class i2c_device:
 #  ----------------------------------------------:
 # **  Write a block of data :
    def write_block_data(self, cmd, data):
-      self.bus.write_block_data(self.addr, cmd, data)
-      sleep(0.0001)
+      with smbus2.SMBus(self.port) as bus:
+         self.bus.write_block_data(self.addr, cmd, data)
 
 
 #  ----------------------------------------------:
@@ -82,6 +82,16 @@ class i2c_device:
       while True:
          try:
             return self.bus.read_byte_data(self.addr, cmd)
+         except OSError as exc:
+            print("Timeout")
+
+
+#  ----------------------------------------------:
+# **  msg_list_size :
+   def msg_list_size(self):
+      with smbus2.SMBus(self.port) as bus:
+         try:
+            return self.bus.read_byte_data(self.addr, 0)
          except OSError as exc:
             print("Timeout")
 

@@ -2,11 +2,22 @@
 import sys
 from i2c_rpi_driver import *
 from stepmotor_rpi_driver import *
+from Port_drv_rpi import *
+from AbSm_rpi import *
 
 # * vars :
 stm = i2c_device(0x40, 1)
-sm1 = stepmotor_rpi_driver(i2c_device(0x40, 1), 1)
-
+sm1 = stepmotor_rpi_driver(i2c_device(0x40, 1), 10)
+port = Port_drv_rpi( i2c_device(0x20))
+absm = AbSm_rpi(stepmotor_rpi_driver(i2c_device(0x40), 10),
+                 B0, A0, 100000)
+absmm = [   AbSm_rpi(stepmotor_rpi_driver(i2c_device(0x40), 1),
+                      B0, A0, 100000),
+            AbSm_rpi(stepmotor_rpi_driver(i2c_device(0x40), 2),
+                      B0, A0, 100000),
+            AbSm_rpi(stepmotor_rpi_driver(i2c_device(0x40), 3),
+                      B0, A0, 100000),
+         ]
 # * main :
 def main(argv):
 # ** start : 
@@ -24,12 +35,34 @@ def main(argv):
 # ** sm1 : 
     if argv[1] == "sm1":
         print ("send step motor command")
-        sm1.steps(argv[2])
+        sm1.steps(int(argv[2]))
+# ** portA : 
+    if argv[1] == "portA":
+        print ("send command to portA", argv[2])
+        port.set([14, int(argv[2])], int(argv[3]))
+# ** portB : 
+    if argv[1] == "portB":
+        print ("send command to portA", argv[2])
+        port.set([15, int(argv[2])], int(argv[3]))
+# ** absm : 
+    if argv[1] == "absm":
+        print ("send command to absolute step motor pos =", argv[2])
+        if argv[2] == "pos":
+            print ("pos =", argv[3])
+            absm.move_to_pos(int(argv[3]))
+        if argv[2] == "actv":
+            print ("is_activ_dir_is_forward =", argv[3])
+            absm.is_activ_dir_is_forward(int(argv[3]))
+        if argv[2] == "mnts":
+            print ("maintenance")
+            absm.maintenance()
+
+
 # ** wca : 
     if argv[1] == "wca":
         print ("send command and arguments")
         print("stm.write_cmd_arg(argv[2], argv[3], [argv[4], argv[5]]) = ", argv[2], argv[3], [argv[4], argv[5]])
-        stm.write_cmd_arg(int(argv[2]), int(argv[3]), [argv[4], argv[5]])
+        stm.write_cmd_arg(int(argv[2]), int(argv[3]), [int(argv[4]), int(argv[5])])
 # ** rdwr : 
     if argv[1] == "rdwr":
         print ("send and resiv command and arguments")
@@ -46,10 +79,11 @@ def main(argv):
         stm.write_block_data(int(argv[2], 0), (int(argv[3], 0)))
         result = stm.read_byte_data(1)
         print("result = ", result)
-# ** i2c_sio : 
-    if argv[1] == "i2c_sio":
+# ** i2c_msgl : 
+    if argv[1] == "i2c_msgl":
         print ("start i2c simbol in and ruturn")
-        stm.send_resiv(argv[2])
+        r = stm.msg_list_size()
+        print("return = ", r)
 # ** "i2c_sar_l" : 
     if argv[1] == "i2c_sar_l":
         print ("start i2c 2simbol rutin")

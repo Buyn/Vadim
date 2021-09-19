@@ -5,7 +5,7 @@ import sys
 from unittest.mock import MagicMock, patch
 
 sys.modules['micropython'] = MagicMock()
-from stepmotor_rpi_driver import *
+from AbSm_rpi import *
 
 # ----------------------------------------------
 # * class Test_Init : 
@@ -22,12 +22,13 @@ class Test_Init(unittest.TestCase):
     def test_init1(self):# {{{
         mw = None
         self.assertIsNone( mw)
-        mw = stepmotor_rpi_driver( i2c_device(13, 1), 1)
+        mw = AbSm_rpi( stepmotor_rpi_driver(i2c_device(13, 1), 1), 1, 2, 100000)
         self.assertIsNotNone( mw)
-        self.assertIsNotNone( mw._stm)
-        self.assertIsNotNone( mw._motor)
+        self.assertIsNotNone( mw._sm)
+        self.assertEqual( mw._max_pos, 100000)
+        self.assertEqual( mw._enbl, 1)
+        self.assertEqual( mw._dir, 2)
         # self.assertEqual( mw.pin, 'PC13')
-        # self.assertEqual( mw.temp_B, 14)
 
             				
 # ----------------------------------------------
@@ -44,7 +45,7 @@ class Test_Fun(unittest.TestCase):
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
-        self.sd = stepmotor_rpi_driver( i2c_device(13, 1), 1)
+        self.test = AbSm_rpi( stepmotor_rpi_driver(i2c_device(13, 1), 1), A1, B5, 100000)
         # self.mw = Main_Windows()
         #     print ("file opened")
         # print("*"*33,"*"*33)
@@ -60,29 +61,64 @@ class Test_Fun(unittest.TestCase):
         print("*"*33,"*"*33)
 
 # ----------------------------------------------
-# ** def test_steps(self):
-    def test_steps(self):
-        print(self.sd.steps(100))
-        print(self.sd.steps(1000))
-        print(self.sd.steps(10000))
-        print(self.sd.steps(100000))
-        print(self.sd.steps(1000000))
+# ** def test_move_to_pos(self): : 
+    def test_move_to_pos(self):
+        # self.assertFalse( self.test._pos)
+        self.assertEqual( self.test._pos, 0)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        r = self.test.move_to_pos(100)
+        self.assertEqual( r, 100)
+        self.assertEqual( self.test._pos, 100)
+        self.assertTrue(self.test._port.value(self.test._dir))
+        self.test.move_to_pos(90)
+        self.assertEqual( self.test._pos, 90)
+        self.assertEqual( r, 10)
+        self.assertEqual( self.test._pos, 100)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        self.test.move_to_pos(900)
+        self.assertEqual( self.test._pos, 900)
+        self.assertTrue(self.test._port.value(self.test._dir))
 
 
-# ** def test_homerun(self):
-# ----------------------------------------------
-    def test_homerun(self):
-        self.sd.homerun()
 #  ----------------------------------------------:
+# ** def test_maintenance(self): : 
+    def test_maintenance(self):
+        self.test.move_to_pos(100)
+        self.assertEqual( self.test._pos, 100)
+        self.test.maintenance()
+        self.assertEqual( self.test._pos, 0)
+        self.assertFalse(self.test._port.value(self.test._dir))
 
+
+#  ----------------------------------------------:
+# ** def test_is_activ_dir_is_forward(self): : 
+    def test_is_activ_dir_is_forward(self):
+        self.test.is_activ_dir_is_forward(True)
+        self.assertTrue( self.test._forward)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        self.test.set_forward()
+        self.assertTrue(self.test._port.value(self.test._dir))
+        self.test.set_backward()
+        self.assertFalse(self.test._port.value(self.test._dir))
+        self.test.is_activ_dir_is_forward(False)
+        self.assertFalse( self.test._forward)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        self.test.set_backward()
+        self.assertTrue(self.test._port.value(self.test._dir))
+        self.test.set_forward()
+        self.assertFalse(self.test._port.value(self.test._dir))
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
+
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_steps'))
-    suite.addTest(Test_Fun('test_homerun'))
-    # suite.addTest(Test_Fun('test_Sharp_cheng'))
+    # suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
+    suite.addTest(Test_Fun('test_move_to_pos'))
+    suite.addTest(Test_Fun('test_maintenance'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
