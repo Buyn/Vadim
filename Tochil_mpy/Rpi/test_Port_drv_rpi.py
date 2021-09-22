@@ -64,7 +64,10 @@ class Test_Fun(unittest.TestCase):
     def test_set(self):
         self.assertFalse( self.test._valueA[0])
         self.test.set(A1, True)
-        self.assertEqual( self.test._valueA[0], 1)
+        self.assertEqual( self.test._valueA[1], 1)
+        self.assertEqual(
+              int.from_bytes(self.test._valueA,
+                             byteorder='big', signed=False), 1)
         self.assertEqual( self.test._valueB[0], 0)
         self.test.set(B5, True)
         # print(self.test._valueA)

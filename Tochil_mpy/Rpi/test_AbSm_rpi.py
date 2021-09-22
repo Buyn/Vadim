@@ -70,13 +70,13 @@ class Test_Fun(unittest.TestCase):
         self.assertEqual( r, 100)
         self.assertEqual( self.test._pos, 100)
         self.assertTrue(self.test._port.value(self.test._dir))
-        self.test.move_to_pos(90)
+        r =self.test.move_to_pos(90)
         self.assertEqual( self.test._pos, 90)
         self.assertEqual( r, 10)
-        self.assertEqual( self.test._pos, 100)
         self.assertFalse(self.test._port.value(self.test._dir))
-        self.test.move_to_pos(900)
+        r = self.test.move_to_pos(900)
         self.assertEqual( self.test._pos, 900)
+        self.assertEqual( r, 810)
         self.assertTrue(self.test._port.value(self.test._dir))
 
 

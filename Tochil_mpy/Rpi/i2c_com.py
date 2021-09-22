@@ -6,7 +6,7 @@ from Port_drv_rpi import *
 from AbSm_rpi import *
 
 # * vars :
-stm = i2c_device(0x40, 1)
+stm = i2c_device(0x20, 1)
 sm1 = stepmotor_rpi_driver(i2c_device(0x40, 1), 10)
 port = Port_drv_rpi( i2c_device(0x20))
 absm = AbSm_rpi(stepmotor_rpi_driver(i2c_device(0x40), 10),
@@ -25,13 +25,13 @@ def main(argv):
     print (argv)
 # ** i2c_2s : 
     if argv[1] == "i2c_2s":
-        print ("start i2c 2simbol rutin")
-        print ("with defalt params")
-        stm.send_2_simbol(argv[2], argv[3])
+        print ("send i2c block - ", hex(int(argv[2], base =16)),  hex(int(argv[3], base =16)))
+        # stm.write_cmd( hex(int(argv[2], base =16)), hex(int(argv[3], base =16)))
+        stm.write_cmd( int(argv[2], base =16), int(argv[3], base =16))
 # ** i2c_s : 
     if argv[1] == "i2c_s":
-        print ("start i2c 2simbol rutin")
-        stm.send_simbol(argv[2])
+        print ("send i2c block - ", int(argv[2], 16), int(argv[3], 16))
+        stm.write_block_data(int(argv[2], 16), [int(argv[3], 16)])
 # ** sm1 : 
     if argv[1] == "sm1":
         print ("send step motor command")
@@ -39,11 +39,11 @@ def main(argv):
 # ** portA : 
     if argv[1] == "portA":
         print ("send command to portA", argv[2])
-        port.set([14, int(argv[2])], int(argv[3]))
+        port.set([0x14, int(argv[2])], int(argv[3]))
 # ** portB : 
     if argv[1] == "portB":
         print ("send command to portA", argv[2])
-        port.set([15, int(argv[2])], int(argv[3]))
+        port.set([0x15, int(argv[2])], int(argv[3]))
 # ** absm : 
     if argv[1] == "absm":
         print ("send command to absolute step motor pos =", argv[2])

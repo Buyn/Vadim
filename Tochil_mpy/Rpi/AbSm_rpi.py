@@ -49,7 +49,7 @@ class AbSm_rpi:
             delta = self._pos - pos
             self.set_backward()
         if self._pos < pos:
-            delta = self._pos + pos
+            delta = pos - self._pos 
             self.set_forward()
         self._sm.steps(delta)
         self._pos = pos

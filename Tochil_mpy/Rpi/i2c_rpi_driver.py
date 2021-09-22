@@ -26,9 +26,9 @@ class i2c_device:
 
 #  ----------------------------------------------:
 # **  Write a single command :
-   def write_cmd(self, cmd):
-      self.bus.write_byte(self.addr, cmd)
-      sleep(0.0001)
+   def write_cmd(self, rgst, data):
+      with smbus2.SMBus(self.port) as bus:
+          bus.write_byte_data(self.addr, rgst, data)
 
 
 #  ----------------------------------------------:
