@@ -18,15 +18,17 @@ class Test_Init(unittest.TestCase):
     #     print('alloc_emergency_exception_buf=', imread)
     #     assert imread.called
 
-# ** def test_init1 : 
-    def test_init1(self):# {{{
+# ** def test_init1 :
+    def test_init1(self):
         mw = None
         self.assertIsNone( mw)
         mw = Port_drv_rpi( i2c_device(13, 1))
         self.assertIsNotNone( mw)
         self.assertIsNotNone( mw._i2c)
-        self.assertEqual( mw._valueA, bytearray(8))
-        self.assertEqual( mw._valueB, bytearray(8))
+        self.assertEqual( 8, len(mw._valueA))
+        self.assertEqual( 8, len(mw._valueB))
+        self.assertEqual( mw._valueB(), 0)
+        self.assertEqual( mw._valueA(), 0)
         # self.assertEqual( mw.pin, 'PC13')
 
             				
@@ -56,41 +58,43 @@ class Test_Fun(unittest.TestCase):
     def tearDownClass(self):
         print("*"*33,"*"*33)
         print("tear down module")
-        self.sd = None
+        self.test = None
         print("*"*33,"*"*33)
 
 # ----------------------------------------------
 # ** def test_set(self): : 
-    def test_set(self):
+    def test_setport(self):
         self.assertFalse( self.test._valueA[0])
-        self.test.set(A1, True)
+        self.assertFalse(self.test.setport(A1, 1))
+        self.assertTrue(self.test.setport(A1, 1))
         self.assertEqual( self.test._valueA[1], 1)
-        self.assertEqual(
-              int.from_bytes(self.test._valueA,
-                             byteorder='big', signed=False), 1)
+        self.assertEqual(self.test._valueA() , 2)
         self.assertEqual( self.test._valueB[0], 0)
-        self.test.set(B5, True)
+        self.test.setport(B5, True)
         # print(self.test._valueA)
-        # print(self.test._valueB)
-        self.assertEqual( self.test._valueB[4], 1)
+        # print(self.test._valueB._value)
+        self.assertEqual( self.test._valueB[5], 1)
+        self.assertEqual( self.test._valueB(), 32)
+        self.assertEqual( self.test._valueB[5], 1)
+        self.test.setport(B5, 0)
+        self.assertEqual( self.test._valueB[5], 0)
 
 
 # ** def test_value(self): : 
     def test_value(self):
-        self.test.set(A1, 0)
-        self.test.set(B1, 0)
-        # print(self.test._valueA)
-        # print(self.test._valueB)
+        self.test.setport(A1, 0)
+        self.test.setport(B1, 0)
         self.assertFalse(self.test.value(A1))
-        self.test.set(A1, 1)
+        self.test.setport(A1, ON)
+        print(self.test._valueA._value)
+        self.assertTrue(self.test._valueA[1])
         self.assertTrue(self.test.value(A1))
         self.assertFalse(self.test.value(B1))
-        self.test.set(B1, True)
+        self.test.setport(B1, ON)
+        print(self.test._valueB._value)
         self.assertTrue(self.test.value(B1))
         # self.assertEqual( self.test._valueA[0], 1)
         # self.assertEqual( self.test._valueB[0], 0)
-        # print(self.test._valueA)
-        # print(self.test._valueB)
         # self.assertEqual( self.test._valueB[4], 1)
 
 
@@ -99,9 +103,9 @@ class Test_Fun(unittest.TestCase):
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_set'))
+    suite.addTest(Test_Fun('test_setport'))
     suite.addTest(Test_Fun('test_value'))
-    # suite.addTest(Test_Fun('test_Sharp_cheng'))
+    # suite.addTest(Test_Fun('test_bits'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))

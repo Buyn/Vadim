@@ -39,11 +39,11 @@ def main(argv):
 # ** portA : 
     if argv[1] == "portA":
         print ("send command to portA", argv[2])
-        port.set([0x14, int(argv[2])], int(argv[3]))
+        port.setport([0x14, int(argv[2])], int(argv[3]))
 # ** portB : 
     if argv[1] == "portB":
         print ("send command to portA", argv[2])
-        port.set([0x15, int(argv[2])], int(argv[3]))
+        port.setport([0x15, int(argv[2])], int(argv[3]))
 # ** absm : 
     if argv[1] == "absm":
         print ("send command to absolute step motor pos =", argv[2])

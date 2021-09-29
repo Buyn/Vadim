@@ -61,7 +61,7 @@ class AbSm_rpi:
 #  ----------------------------------------------:
    def set_forward(self):
        if self._port.value(self._dir) == self._forward: return
-       self._port.set(self._dir, self._forward)
+       self._port.setport(self._dir, self._forward)
 
 
 #  ----------------------------------------------:
@@ -69,7 +69,7 @@ class AbSm_rpi:
 #  ----------------------------------------------:
    def set_backward(self):
        if self._port.value(self._dir) !=  self._forward: return
-       self._port.set(self._dir, not self._forward)
+       self._port.setport(self._dir, not self._forward)
 
 
 #  ----------------------------------------------:

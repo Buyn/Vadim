@@ -69,15 +69,15 @@ class Test_Fun(unittest.TestCase):
         r = self.test.move_to_pos(100)
         self.assertEqual( r, 100)
         self.assertEqual( self.test._pos, 100)
-        self.assertTrue(self.test._port.value(self.test._dir))
+        self.assertFalse(self.test._port.value(self.test._dir))
         r =self.test.move_to_pos(90)
         self.assertEqual( self.test._pos, 90)
         self.assertEqual( r, 10)
-        self.assertFalse(self.test._port.value(self.test._dir))
+        self.assertTrue(self.test._port.value(self.test._dir))
         r = self.test.move_to_pos(900)
         self.assertEqual( self.test._pos, 900)
         self.assertEqual( r, 810)
-        self.assertTrue(self.test._port.value(self.test._dir))
+        self.assertFalse(self.test._port.value(self.test._dir))
 
 
 #  ----------------------------------------------:
@@ -87,7 +87,7 @@ class Test_Fun(unittest.TestCase):
         self.assertEqual( self.test._pos, 100)
         self.test.maintenance()
         self.assertEqual( self.test._pos, 0)
-        self.assertFalse(self.test._port.value(self.test._dir))
+        self.assertTrue(self.test._port.value(self.test._dir))
 
 
 #  ----------------------------------------------:
@@ -95,7 +95,7 @@ class Test_Fun(unittest.TestCase):
     def test_is_activ_dir_is_forward(self):
         self.test.is_activ_dir_is_forward(True)
         self.assertTrue( self.test._forward)
-        self.assertFalse(self.test._port.value(self.test._dir))
+        self.assertTrue(self.test._port.value(self.test._dir))
         self.test.set_forward()
         self.assertTrue(self.test._port.value(self.test._dir))
         self.test.set_backward()
@@ -116,7 +116,7 @@ class Test_Fun(unittest.TestCase):
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
-    # suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
+    suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
     suite.addTest(Test_Fun('test_move_to_pos'))
     suite.addTest(Test_Fun('test_maintenance'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))

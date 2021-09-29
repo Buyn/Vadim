@@ -22,7 +22,7 @@ class Step_Driver(object):
 #  ----------------------------------------------:
 # **     def __init__(self, pin, longs = 50): : 
 #  ----------------------------------------------:
-    def __init__(self, step_pin, end_pin, longs = 500):
+    def __init__(self, step_pin, end_pin, longs = 100):
         self.pin  = pyb.Pin(step_pin, pyb.Pin.OUT)
         self._end_pin  = pyb.Pin(end_pin, pyb.Pin.IN)
         # btn = machine.Pin(pyb.Pin.board.PB4, machine.Pin.IN)
@@ -34,9 +34,9 @@ class Step_Driver(object):
 # **     def step(self): : 
 #  ----------------------------------------------:
     def step(self):
-        self.pin.value(0)
-        utime.sleep_us(self.longs)
         self.pin.value(1)
+        utime.sleep_us(self.longs)
+        self.pin.value(0)
 
 
 #  ----------------------------------------------:

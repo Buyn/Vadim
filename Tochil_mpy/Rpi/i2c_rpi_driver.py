@@ -34,9 +34,10 @@ class i2c_device:
 #  ----------------------------------------------:
 # **  Write a single command read result :
    def write_cmd_read(self, cmd):
-      self.bus.write_byte(self.addr, cmd)
-      sleep(0.0001)
-      return self.bus.read_byte(self.addr)
+      with smbus2.SMBus(self.port) as bus:
+        self.bus.write_byte(self.addr, cmd)
+        sleep(0.0001)
+        return self.bus.read_byte(self.addr)
 
 
 #  ----------------------------------------------:
@@ -72,8 +73,9 @@ class i2c_device:
 
 #  ----------------------------------------------:
 # **  Read a single byte :
-   def read(self):
-      return self.bus.read_byte(self.addr)
+   def read(self, reg = 0):
+      with smbus2.SMBus(self.port) as bus:
+        return self.bus.read_byte_data(self.addr, reg)
 
 
 #  ----------------------------------------------:
@@ -88,10 +90,10 @@ class i2c_device:
 
 #  ----------------------------------------------:
 # **  msg_list_size :
-   def msg_list_size(self):
+   def msg_list_size(self, reg = 0):
       with smbus2.SMBus(self.port) as bus:
          try:
-            return self.bus.read_byte_data(self.addr, 0)
+            return self.bus.read_byte_data(self.addr, reg)
          except OSError as exc:
             print("Timeout")
 
@@ -135,7 +137,7 @@ class i2c_device:
 
 
 #  ----------------------------------------------:
-# **  send and resiv Tow simbols cicle :
+# **  send and resiv Tou simbols cicle :
    def send_and_reiv_loop(self, cmd1, cmd2):
       while True:
          print("send = ", cmd1)
