@@ -13,6 +13,12 @@ I2CBUS = 1
 ADDRESS = 0x40
 
 
+# * Commands list block :
+REG_GETMSGLST        = 0
+REG_GETMSGONE        = 1
+REG_CMD              = 5
+
+#  ----------------------------------------------:
 #  ----------------------------------------------:
 # * i2c_device: : 
 class i2c_device:
