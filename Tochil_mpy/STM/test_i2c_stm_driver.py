@@ -88,8 +88,23 @@ class Test_Fun(unittest.TestCase):
         # print(self.sd.msg_list)
         self.assertEqual(1,len(self.sd.msg_list))
         self.assertEqual(1,self.sd.msg_list[0][0])
+        self.assertEqual(4,self.sd.msg_list[0][3])
         # self.sd.get_msg()
         # self.assertEqual(1,self.sd.msg_list[0])
+
+
+# ----------------------------------------------
+# ** def test_get_switch (self):
+# ----------------------------------------------
+    def test_get_switch(self):
+        self.sd.i2c.data_to_resiv = [4,0,1,5,6,7]
+        self.assertIsNone(self.sd.get_switch())
+        self.sd.i2c.data_to_resiv = [5,1,2,3,4,5]
+        print(self.sd.i2c.recv(1))
+        self.assertTrue(self.sd.get_switch())
+        self.assertEqual(1,len(self.sd.msg_list))
+        self.assertEqual(5,self.sd.msg_list[0][0])
+        self.assertEqual(3,self.sd.msg_list[0][3])
 
 
 # ----------------------------------------------
@@ -119,7 +134,7 @@ class Test_Fun(unittest.TestCase):
         self.assertEqual( self.sd.rutin(), None )
         self.sd.get_msg()
         self.assertEqual( len(self.sd.msg_list), 1 )
-        self.assertEqual( self.sd.rutin(),  b'\x01\x02\x03\x04\x05')
+        self.assertEqual( self.sd.rutin(),  b'\x01\x02\x03\x04')
         self.assertEqual( len(self.sd.msg_list), 0 )
         self.assertEqual( self.sd.rutin(), None )
         self.sd.get_msg()
@@ -141,9 +156,10 @@ class Test_Fun(unittest.TestCase):
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    # suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_get_msg'))
     suite.addTest(Test_Fun('test_rutine'))
+    suite.addTest(Test_Fun('test_get_switch'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))

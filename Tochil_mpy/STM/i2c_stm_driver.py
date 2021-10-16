@@ -12,6 +12,13 @@ BAUDRATE = 100000
 PINOUT01 =  pyb.Pin(pyb.Pin.cpu.C13, pyb.Pin.OUT)
 
 
+# * Commands list block :
+REG_GETMSGLST        = 0
+REG_GETMSGONE        = 1
+REG_CMD              = 5
+
+#  ----------------------------------------------:
+#  ----------------------------------------------:
 # ----------------------------------------------
 # *  class I2C_com :
 # ----------------------------------------------
@@ -48,25 +55,67 @@ class I2C_com(object):
 
 
 # ----------------------------------------------
-# ** def get_msg(self, byt = 5): : 
+# ** def get_switch(self, byt = 4): : 
 # ----------------------------------------------
-    def get_msg(self, byt = 5):
+    def get_switch(self, byt = 4):
+        try:
+          print("Start waiting byte")	
+          data = self.i2c.recv(1)
+        except OSError as exc:
+          # if exc.args[0] not in (5, 110):
+            # 5 == EIO, occurs when master does a I2C bus scan
+            # 110 == ETIMEDOUT
+            print("OSError in resiv get_switch", exc)
+        else:
+          if data == b'\x05':
+            return self.get_msg(4)
+            print("Date = 5")
+          if data == b'\x01':
+            print("Date = 1")
+          if data == b'\x00':
+            self.i2c_send(len(self.msg_list))
+            print("Date = 0")
+          else:
+            print("RECV&SEND: %r" % data)
+
+
+# ----------------------------------------------
+# ** def get_msg(self, byt = 4): : 
+# ----------------------------------------------
+    def get_msg(self, byt = 4):
         try:
             # data = i2c_slave.recv(4)
             data = self.i2c.recv(byt)
         except OSError as exc:
-            if exc.args[0] not in (5, 110):
+            # if exc.args[0] not in (5, 110):
                 # 5 == EIO, occurs when master does a I2C bus scan
                 # 110 == ETIMEDOUT
-                print(exc)
+            print("OSError get_msg:",exc)
             return False
         if not data:
             print("NO DATA" )
             return False
-        print("RECV:" , data)
-        print("str - " , isinstance(data, bytes))
+        # print("RECV cmd:" , data)
         self.msg_list.append(data)
+        self.i2c_send(len(self.msg_list))
         return True
+
+
+# ----------------------------------------------
+# **  def i2c_send(snd = 0x40): : 
+# ----------------------------------------------
+    def i2c_send(self, snd):
+      try:
+        self.i2c.send(snd)
+        # print("send = ", snd)
+      except OSError as exc:
+        if exc.args[0] == 5:
+          print("EIO in send")
+        if exc.args[0] == 110:
+          print("ETIMEDOUT in send")
+        # 5 == EIO, occurs when master does a I2C bus scan
+        # 110 == ETIMEDOUT
+        print(exc)
 
 
 # ----------------------------------------------

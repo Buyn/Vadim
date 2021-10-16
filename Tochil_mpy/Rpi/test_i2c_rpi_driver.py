@@ -115,7 +115,7 @@ class Test_Fun(unittest.TestCase):
        result = self.sd.msg_get_one()
        self.assertEqual( result, [11, 12, 13, 14])
 
-       
+
 # ** def test_Sharp_cheng(self):
     def test_Sharp_cheng(self):
         test = SharpScreen()
