@@ -19,7 +19,7 @@ RETURN_DATA = [i for i in range(11)[::-1]]
 #  ----------------------------------------------:
 # * class SMBus: 
 class SMBus(object):
-
+# ** def __init__(self, bus=None, force=False, port=I2CBUS): : 
     def __init__(self, bus=None, force=False, port=I2CBUS):
         """
         Initialize and (optionally) open an i2c bus connection.
@@ -31,17 +31,19 @@ class SMBus(object):
             already using it.
         :type force: boolean
         """
-        pass
+        self.i2c_read_byte =10
+        self.i2c_write_byte = []
 
      
+# ** def __enter__(self): : 
     def __enter__(self):
         """Enter handler."""
         return self
-
+# ** def __exit__(self, exc_type, exc_val, exc_tb): : 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Exit handler."""
         self.close()
-
+# ** def open(self, bus): : 
     def open(self, bus):
         """
         Open a given i2c bus.
@@ -53,6 +55,7 @@ class SMBus(object):
         pass
 
      
+# ** def close(self): : 
     def close(self):
         """
         Close the i2c connection.
@@ -60,9 +63,10 @@ class SMBus(object):
         pass
 
      
+# ** def _get_pec(self): : 
     def _get_pec(self):
         return self._pec
-
+# ** def enable_pec(self, enable=True): : 
     def enable_pec(self, enable=True):
         """
         Enable/Disable PEC (Packet Error Checking) - SMBus 1.1 and later
@@ -72,9 +76,10 @@ class SMBus(object):
         pass
 
      
+# ** pec = property(_get_pec, enable_pec)  # Drop-in replacement for smbus member "pec" : 
     pec = property(_get_pec, enable_pec)  # Drop-in replacement for smbus member "pec"
     """Get and set SMBus PEC. 0 = disabled (default), 1 = enabled."""
-
+# ** def _set_address(self, address, force=None): : 
     def _set_address(self, address, force=None):
         """
         Set i2c slave address to use for subsequent calls.
@@ -86,6 +91,7 @@ class SMBus(object):
         pass
 
      
+# ** def _get_funcs(self): : 
     def _get_funcs(self):
         """
         Returns a 32-bit value stating supported I2C functions.
@@ -94,6 +100,7 @@ class SMBus(object):
         pass
 
      
+# ** def write_quick(self, i2c_addr, force=None): : 
     def write_quick(self, i2c_addr, force=None):
         """
         Perform quick transaction. Throws IOError if unsuccessful.
@@ -105,6 +112,7 @@ class SMBus(object):
         pass
 
      
+# ** def read_byte(self, i2c_addr, force=None): : 
     def read_byte(self, i2c_addr, force=None):
         """
         Read a single byte from a device.
@@ -115,9 +123,11 @@ class SMBus(object):
         :type force: Boolean
         :return: Read byte value
         """
-        return i2c_addr
+        self.i2c_read_byte += 1
+        return self.i2c_read_byte 
 
      
+# ** def write_byte(self, i2c_addr, value, force=None): : 
     def write_byte(self, i2c_addr, value, force=None):
         """
         Write a single byte to a device.
@@ -128,9 +138,11 @@ class SMBus(object):
         :param force:
         :type force: boolean
         """
-        pass
+        self.i2c_write_byte.append( value)
+        return self.i2c_write_byte 
 
      
+# ** def read_byte_data(self, i2c_addr, register, force=None): : 
     def read_byte_data(self, i2c_addr, register, force=None):
         """
         Read a single byte from a designated register.
@@ -145,7 +157,7 @@ class SMBus(object):
         """
         return  RETURN_DATA[0]
 
-
+# ** def write_byte_data(self, i2c_addr, register, value, force=None): : 
     def write_byte_data(self, i2c_addr, register, value, force=None):
         """
         Write a byte to a given register.
@@ -162,6 +174,7 @@ class SMBus(object):
         pass
 
      
+# ** def read_word_data(self, i2c_addr, register, force=None): : 
     def read_word_data(self, i2c_addr, register, force=None):
         """
         Read a single word (2 bytes) from a given register.
@@ -177,6 +190,7 @@ class SMBus(object):
         pass
 
      
+# ** def write_word_data(self, i2c_addr, register, value, force=None): : 
     def write_word_data(self, i2c_addr, register, value, force=None):
         """
         Write a single word (2 bytes) to a given register.
@@ -193,6 +207,7 @@ class SMBus(object):
         pass
 
      
+# ** def process_call(self, i2c_addr, register, value, force=None): : 
     def process_call(self, i2c_addr, register, value, force=None):
         """
         Executes a SMBus Process Call, sending a 16-bit value and receiving a 16-bit response
@@ -209,6 +224,7 @@ class SMBus(object):
         pass
 
      
+# ** def read_block_data(self, i2c_addr, register, force=None): : 
     def read_block_data(self, i2c_addr, register, force=None):
         """
         Read a block of up to 32-bytes from a given register.
@@ -224,6 +240,7 @@ class SMBus(object):
         return register
 
      
+# ** def write_block_data(self, i2c_addr, register, data, force=None): : 
     def write_block_data(self, i2c_addr, register, data, force=None):
         """
         Write a block of byte data to a given register.
@@ -240,6 +257,7 @@ class SMBus(object):
         pass
 
      
+# ** def block_process_call(self, i2c_addr, register, data, force=None): : 
     def block_process_call(self, i2c_addr, register, data, force=None):
         """
         Executes a SMBus Block Process Call, sending a variable-size data
@@ -258,6 +276,7 @@ class SMBus(object):
         pass
 
      
+# ** def read_i2c_block_data(self, i2c_addr, register, length, force=None): : 
     def read_i2c_block_data(self, i2c_addr, register, length, force=None):
         """
         Read a block of byte data from a given register.
@@ -275,6 +294,7 @@ class SMBus(object):
         pass
 
      
+# ** def write_i2c_block_data(self, i2c_addr, register, data, force=None): : 
     def write_i2c_block_data(self, i2c_addr, register, data, force=None):
         """
         Write a block of byte data to a given register.
@@ -294,6 +314,7 @@ class SMBus(object):
 
 
      
+# ** def i2c_rdwr(self, *i2c_msgs): : 
     def i2c_rdwr(self, *i2c_msgs):
         """
         Combine a series of i2c read and write operations in a single

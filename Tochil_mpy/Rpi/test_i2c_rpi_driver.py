@@ -27,6 +27,8 @@ class Test_Init(unittest.TestCase):
         self.assertIsNotNone( mw.bus)
         self.assertIsNotNone( mw.cmd_list)
         self.assertEqual( len(mw.cmd_list), 0)
+        self.assertIsNotNone( mw.msg_list)
+        self.assertEqual( len(mw.msg_list), 0)
         # self.assertEqual( mw.temp_B, 14)
 
             				
@@ -68,13 +70,13 @@ class Test_Fun(unittest.TestCase):
     def test_write_block_data(self):
         self.sd.write_block_data( 14, 5)
 
-# ** def test_wr_cmd_arg(self): : 
-    def test_wr_cmd_arg(self):
+# ** def test_write_cmd_arg(self): : 
+    def test_write_cmd_arg(self):
         # print (list(range(11))[::-1])
-        r = self.sd.rdwr_cmd_arg( 1, 13, [13, 14 ] )
+        r = self.sd.write_cmd_arg( 1, 13, [13, 14 ] )
         # self.assertEqual( int.from_bytes(r.buf[0], "big"), 10)
         # self.assertEqual( int.from_bytes(r.buf[0], "big"), 10)
-        self.assertEqual( r[0], 10)
+        self.assertEqual( r, 11)
 
 
 # ** def test_send_2_simbol(self):
@@ -101,9 +103,19 @@ class Test_Fun(unittest.TestCase):
 # ** def test_msg_list_size(self):
     def test_msg_list_size(self):
        result = self.sd.msg_list_size()
-       self.assertEqual( result, 10)
+       self.assertEqual( result, 11)
+       result = self.sd.msg_list_size()
+       self.assertEqual( result, 11)
 
 
+# ** def test_msg_get_one(self):
+    def test_msg_get_one(self):
+       result = self.sd.msg_get_one()
+       self.assertEqual( result, [11, 12, 13, 14])
+       result = self.sd.msg_get_one()
+       self.assertEqual( result, [11, 12, 13, 14])
+
+       
 # ** def test_Sharp_cheng(self):
     def test_Sharp_cheng(self):
         test = SharpScreen()
@@ -132,6 +144,7 @@ def suite_Init():
     # suite.addTest(Test_Fun('test_write_block_data'))
     # suite.addTest(Test_Fun('test_wr_cmd_arg'))
     suite.addTest(Test_Fun('test_msg_list_size'))
+    suite.addTest(Test_Fun('test_msg_get_one'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))

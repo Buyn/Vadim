@@ -27,6 +27,7 @@ class i2c_device:
       self.addr = addr
       self.port = port
       self.msg_list = []
+      self.cmd_list = []
       self.bus = smbus2.SMBus(port)
 
 
