@@ -31,6 +31,8 @@ sms = [ Step_Driver(step_pin01, end_pin01),
 #  ----------------------------------------------:
 # * Commands list block :
 CMD_STEPS = 10
+CMD_SET_OFFTIME = 20
+CMD_SET_ONTIME  = 21
 CMD_HOMERUN = 100
 DEV_STEPMOTOR01 = 10
 DEV_STEPMOTOR02 = 11
@@ -44,7 +46,7 @@ DEV_SMS = range(DEV_STEPMOTOR01, DEV_STEPMOTOR05)
 #  ----------------------------------------------:
 def mainloop(test = False):
     while (True):
-       if rpi.get_msg() and len(rpi.msg_list)>0:
+       if rpi.get_switch() and len(rpi.msg_list)>0:
            cmd_rutin(rpi.rutin())
        if test: return True
 
@@ -53,9 +55,9 @@ def mainloop(test = False):
 # * def cmd_rutin(msg) : 
 #  ----------------------------------------------:
 def cmd_rutin(msg):
-    if msg[1] in DEV_SMS:
-        print("Step motor = {0}".format(msg[1]-10))
-        step_motor_rutine(sms[msg[1]-10], msg[2], [msg[3], msg[4]])
+    if msg[0] in DEV_SMS:
+        print("Step motor = {0}".format(msg[0]-10))
+        step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
 
 
 #  ----------------------------------------------:

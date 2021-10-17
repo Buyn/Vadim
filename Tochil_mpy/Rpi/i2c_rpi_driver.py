@@ -26,6 +26,7 @@ class i2c_device:
    def __init__(self, addr, port=I2CBUS):
       self.addr = addr
       self.port = port
+      self.msg_list = []
       self.cmd_list = []
       self.bus = smbus2.SMBus(port)
 
@@ -48,13 +49,15 @@ class i2c_device:
 
 #  ----------------------------------------------:
 # **  Write a command and argument : 
-   def write_cmd_arg(self, dev, cmd, data):
+   def write_cmd_arg(self, dev, cmd, data, reg = REG_CMD):
       with smbus2.SMBus(self.port) as bus:
-          # Write a block of 8 bytes to address 80 from offset 0
-          # data = [1, 2, 3, 4, 5, 6, 7, 8]
-          # bus.write_i2c_block_data(80, 0, data)
-          bus.write_i2c_block_data(self.addr, 5,
-                        [dev, cmd, data[0], data[1]])
+         try:
+            bus.write_byte(self.addr, reg)
+            bus.write_i2c_block_data(self.addr, dev,
+                          [cmd, data[0], data[1]])
+            return bus.read_byte(self.addr)
+         except OSError as exc:
+            print(exc)
 
 
 #  ----------------------------------------------:
@@ -96,12 +99,26 @@ class i2c_device:
 
 #  ----------------------------------------------:
 # **  msg_list_size :
-   def msg_list_size(self, reg = 0):
+   def msg_list_size(self, reg = REG_GETMSGLST):
       with smbus2.SMBus(self.port) as bus:
          try:
-            return self.bus.read_byte_data(self.addr, reg)
+            bus.write_byte(self.addr, reg)
+            return bus.read_byte(self.addr)
          except OSError as exc:
-            print("Timeout")
+            print(exc)
+
+
+#  ----------------------------------------------:
+# **  msg_get_one :
+   def msg_get_one(self, reg = REG_GETMSGONE, lengs = 4):
+      with smbus2.SMBus(self.port) as bus:
+         try:
+            bus.write_byte(self.addr, reg)
+            result = [bus.read_byte(self.addr) for i in range(lengs)]
+            self.msg_list.append(result)
+            return result 
+         except OSError as exc:
+            print(exc)
 
 
 #  ----------------------------------------------:

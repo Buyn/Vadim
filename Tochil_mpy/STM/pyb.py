@@ -400,6 +400,7 @@ class I2C:
         """
         Construct an I2C object on the given bus.
         """
+        self.data_to_resiv = bytes([1,2,3,4,5,6,7,8,9,])
         pass
 
 
@@ -437,7 +438,7 @@ class I2C:
         """
         Receive data on the bus.
         """
-        return bytes([DATA_TO_RESIV[i] for i in range(recv)])
+        return bytes([self.data_to_resiv[i] for i in range(recv)])
 
     def send(self, send, addr=0x00, timeout=5000):
         """
@@ -618,7 +619,7 @@ class Pin:
         pass 
 
 
-    def value(self, value = None):
+    def value(self, value = 0):
         """
         Get or set the digital logic level of the pin.
         """
