@@ -9,6 +9,8 @@ from i2c_rpi_driver import *
 #  ----------------------------------------------:
 # * Commands list block :
 CMD_STEPS       = 10
+CMD_SET_OFFTIME = 20
+CMD_SET_ONTIME  = 21
 CMD_HOMERUN     = 100
 
 #  ----------------------------------------------:
