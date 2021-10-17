@@ -10,14 +10,14 @@ from driver_m import *
 #  ----------------------------------------------:
 rpi = I2C_com()
 step_pin01 = pyb.Pin.cpu.B13
-step_pin02 = pyb.Pin.cpu.B10
-step_pin03 = pyb.Pin.cpu.B10
-step_pin04 = pyb.Pin.cpu.B10
+step_pin02 = pyb.Pin.cpu.B14
+step_pin03 = pyb.Pin.cpu.B15
+step_pin04 = pyb.Pin.cpu.A8 #A
 step_pin05 = pyb.Pin.cpu.A10
 end_pin01 = pyb.Pin.cpu.B5
-end_pin02 = pyb.Pin.cpu.B10
-end_pin03 = pyb.Pin.cpu.B10
-end_pin04 = pyb.Pin.cpu.B10
+end_pin02 = pyb.Pin.cpu.B9
+end_pin03 = pyb.Pin.cpu.B8
+end_pin04 = pyb.Pin.cpu.B1 #A
 end_pin05 = pyb.Pin.cpu.A10
 sm01 =  Step_Driver(step_pin01 , end_pin01)
 sms = [ Step_Driver(step_pin01, end_pin01),
@@ -30,10 +30,12 @@ sms = [ Step_Driver(step_pin01, end_pin01),
 
 #  ----------------------------------------------:
 # * Commands list block :
-CMD_STEPS = 10
+CMD_STEPS       = 10
+CMD_10KSTEPS    = 11
 CMD_SET_OFFTIME = 20
 CMD_SET_ONTIME  = 21
-CMD_HOMERUN = 100
+CMD_HOMERUN     = 100
+
 DEV_STEPMOTOR01 = 10
 DEV_STEPMOTOR02 = 11
 DEV_STEPMOTOR03 = 12
@@ -67,7 +69,7 @@ def step_motor_rutine(sm, cmd, data):
     if cmd == CMD_STEPS:
         r = data[0]*256 + data[1]
         print("start {0} steps on Step motor".format(r))
-        sm.step_on(r,100)
+        sm.step_on(r)
     if cmd == CMD_HOMERUN:
         r = data[0]*256 + data[1]
         print("start homerun")

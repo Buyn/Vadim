@@ -9,14 +9,20 @@ from i2c_rpi_driver import *
 #  ----------------------------------------------:
 # * Commands list block :
 CMD_STEPS       = 10
+CMD_10KSTEPS    = 11
 CMD_SET_OFFTIME = 20
 CMD_SET_ONTIME  = 21
 CMD_HOMERUN     = 100
 
 #  ----------------------------------------------:
 # * class stepmotor_rpi_driver: : 
+# ** class **-------------------------------------:
 class stepmotor_rpi_driver:
+
+
+#  ----------------------------------------------:
 # ** __init__ : 
+#  ----------------------------------------------:
    def __init__(self, stm, motor):
       self._stm = stm
       self._motor = motor
@@ -24,15 +30,33 @@ class stepmotor_rpi_driver:
 
 #  ----------------------------------------------:
 # ** def steps(self, times = 1): : 
+#  ----------------------------------------------:
    def steps(self, times = 1):
-      # r = 65535
-      # print(int("0xffff", base=16 ))
-      # print((r).to_bytes(2, "big"))
-      if times > 65535: times = 65535
+      if times < 65535: self.normal_steps(times) 
+      else: self.k10step(times)
+
+
+#  ----------------------------------------------:
+# ** def normal_steps(self, times = 1): : 
+#  ----------------------------------------------:
+   def normal_steps(self, times = 1):
       _ = (times).to_bytes(2, "big")
       self._stm.write_cmd_arg(self._motor, CMD_STEPS, [_[0], _[1]])
-      # self.bus.write_byte(self.addr, cmd)
       # sleep(0.0001)
+
+
+#  ----------------------------------------------:
+# ** def k10step(self, ksteps): : 
+#  ----------------------------------------------:
+   def k10step(self, allsteps):
+      steps = allsteps % 10000
+      ksteps = (allsteps - steps)/10000
+      # if ksteps > 65535: ksteps = 65535
+      _ = int(ksteps).to_bytes(2, "big")
+      self._stm.write_cmd_arg(self._motor, CMD_10KSTEPS, [_[0], _[1]])
+      sleep(0.001)
+      if steps : self.normal_steps(steps)
+      return steps, ksteps
 
 
 #  ----------------------------------------------:
@@ -63,4 +87,5 @@ class stepmotor_rpi_driver:
 
 
 #  ----------------------------------------------:
+# ** ----------------------------------------------:
 # * ----------------------------------------------:
