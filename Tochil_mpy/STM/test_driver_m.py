@@ -45,7 +45,7 @@ class Test_Fun(unittest.TestCase):
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
-        self.sd = Step_Driver(pyb.Pin.cpu.C13)
+        self.sd = Step_Driver(pyb.Pin.cpu.C13, pyb.Pin.cpu.C14)
         # self.mw = Main_Windows()
         #     print ("file opened")
         # print("*"*33,"*"*33)
