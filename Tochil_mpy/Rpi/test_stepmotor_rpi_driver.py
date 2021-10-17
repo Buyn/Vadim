@@ -75,6 +75,14 @@ class Test_Fun(unittest.TestCase):
         self.sd.homerun()
 #  ----------------------------------------------:
 
+# ** def test_homerun(self):
+# ----------------------------------------------
+    def test_set_speed(self):
+        self.sd.set_ontime(100)
+        self.sd.set_offtime(200)
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 # * def suite Init(): : 
 def suite_Init():
@@ -82,6 +90,7 @@ def suite_Init():
     suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_steps'))
     suite.addTest(Test_Fun('test_homerun'))
+    suite.addTest(Test_Fun('test_set_speed'))
     # suite.addTest(Test_Fun('test_Sharp_cheng'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop

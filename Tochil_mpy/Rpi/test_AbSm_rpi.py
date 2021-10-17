@@ -19,6 +19,7 @@ class Test_Init(unittest.TestCase):
     #     assert imread.called
 
 # ** def test_init1 : 
+#  ----------------------------------------------:
     def test_init1(self):# {{{
         mw = None
         self.assertIsNone( mw)
@@ -42,6 +43,7 @@ class Test_Fun(unittest.TestCase):
         assert imread.called
 
 # ** @classmethod #setUpClass#  : 
+#  ----------------------------------------------:
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
@@ -53,6 +55,7 @@ class Test_Fun(unittest.TestCase):
         
 # ----------------------------------------------
 # ** @classmethod #tearDownClass# : 
+#  ----------------------------------------------:
     @classmethod #tearDownClass# {{{
     def tearDownClass(self):
         print("*"*33,"*"*33)
@@ -62,6 +65,7 @@ class Test_Fun(unittest.TestCase):
 
 # ----------------------------------------------
 # ** def test_move_to_pos(self): : 
+#  ----------------------------------------------:
     def test_move_to_pos(self):
         # self.assertFalse( self.test._pos)
         self.assertEqual( self.test._pos, 0)
@@ -82,6 +86,7 @@ class Test_Fun(unittest.TestCase):
 
 #  ----------------------------------------------:
 # ** def test_maintenance(self): : 
+#  ----------------------------------------------:
     def test_maintenance(self):
         self.test.move_to_pos(100)
         self.assertEqual( self.test._pos, 100)
@@ -92,6 +97,7 @@ class Test_Fun(unittest.TestCase):
 
 #  ----------------------------------------------:
 # ** def test_is_activ_dir_is_forward(self): : 
+#  ----------------------------------------------:
     def test_is_activ_dir_is_forward(self):
         self.test.is_activ_dir_is_forward(True)
         self.assertTrue( self.test._forward)
@@ -110,15 +116,24 @@ class Test_Fun(unittest.TestCase):
 
 
 #  ----------------------------------------------:
+# ** def test_set_speed(self): 
+#  ----------------------------------------------:
+    def test_set_speed(self):
+        self.test.set_ontime(100)
+        self.test.set_offtime(200)
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
-    suite.addTest(Test_Fun('test_move_to_pos'))
-    suite.addTest(Test_Fun('test_maintenance'))
+    # suite.addTest(Test_Init('test_init1'))
+    # suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
+    # suite.addTest(Test_Fun('test_move_to_pos'))
+    # suite.addTest(Test_Fun('test_maintenance'))
+    suite.addTest(Test_Fun('test_set_speed'))
     # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
