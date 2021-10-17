@@ -72,6 +72,14 @@ def step_motor_rutine(sm, cmd, data):
         r = data[0]*256 + data[1]
         print("start homerun")
         sm.homerun(timeout = r)
+    if cmd == CMD_SET_OFFTIME:
+        r = data[0]*256 + data[1]
+        print("set offtime = ", r)
+        sm._offtime = r
+    if cmd == CMD_SET_ONTIME:
+        r = data[0]*256 + data[1]
+        print("set ontime = ", r)
+        sm._ontime = r
 
 
 #  ----------------------------------------------:

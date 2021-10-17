@@ -75,10 +75,25 @@ class AbSm_rpi:
 #  ----------------------------------------------:
 #  ----------------------------------------------:
 # ** def maintenance(self): : 
+#  ----------------------------------------------:
    def maintenance(self): 
       self.set_backward()
       self._sm.homerun()
       self._pos = 0
+
+
+#  ----------------------------------------------:
+# ** def set_offtime(self, timeout): : 
+#  ----------------------------------------------:
+   def set_offtime(self, timeout): 
+      self._sm.set_offtime(timeout)
+
+
+#  ----------------------------------------------:
+# ** def set_ontime(self, timeout): : 
+#  ----------------------------------------------:
+   def set_ontime(self, timeout): 
+      self._sm.set_ontime(timeout)
 
 
 #  ----------------------------------------------:

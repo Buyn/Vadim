@@ -92,7 +92,9 @@ class Test_Fun(unittest.TestCase):
 # ----------------------------------------------
     def test_step_motor_rutine (self):
         step_motor_rutine(sm = sms[1], cmd = CMD_STEPS, data = [0, 100] )
-        # step_motor_rutine(sm = sms[1], cmd = CMD_HOMERUN, data = [0, 100] )
+        step_motor_rutine(sm = sms[2], cmd = CMD_HOMERUN, data = [0, 100] )
+        step_motor_rutine(sm = sms[3], cmd = CMD_SET_OFFTIME, data = [0, 100] )
+        step_motor_rutine(sm = sms[4], cmd = CMD_SET_ONTIME, data = [0, 200] )
 
 
 # ----------------------------------------------
@@ -124,9 +126,9 @@ class Test_Fun(unittest.TestCase):
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_mainloop'))
-    suite.addTest(Test_Fun('test_cmd_rutine'))
+    # suite.addTest(Test_Init('test_init1'))
+    # suite.addTest(Test_Fun('test_mainloop'))
+    # suite.addTest(Test_Fun('test_cmd_rutine'))
     suite.addTest(Test_Fun('test_step_motor_rutine'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
