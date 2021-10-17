@@ -59,7 +59,8 @@ class Step_Driver(object):
         while True:
             if not self._end_pin.value(): return
             self.step()
-            utime.sleep_us(TIMEOUT)
+            utime.sleep_us(self._offtime)
 
 
 #  ----------------------------------------------:
+
