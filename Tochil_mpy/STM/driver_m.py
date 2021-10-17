@@ -27,6 +27,7 @@ class Step_Driver(object):
         self._end_pin  = pyb.Pin(end_pin, pyb.Pin.IN)
         # btn = machine.Pin(pyb.Pin.board.PB4, machine.Pin.IN)
         self.longs= longs
+        self.offtime= 100
         # timer.callback(self.cb)
 
 
@@ -42,7 +43,7 @@ class Step_Driver(object):
 #  ----------------------------------------------:
 # **     def step_on(self, steps, timeout): : 
 #  ----------------------------------------------:
-    def step_on(self, steps, timeout):
+    def step_on(self, steps, timeout = self.offtime):
         for step in range(steps):
             # print(step)    
             self.step()
