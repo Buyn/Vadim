@@ -619,7 +619,7 @@ class Pin:
         pass 
 
 
-    def value(self, value = None):
+    def value(self, value = 0):
         """
         Get or set the digital logic level of the pin.
         """

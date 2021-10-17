@@ -79,10 +79,10 @@ class Test_Fun(unittest.TestCase):
         msg = rpi.rutin()
         print(msg)
         print(msg[2])
-        msg = bytes(b'\x05\x0A\x0A\x00\x0f')
+        msg = bytes(b'\x0A\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        msg = bytes(b'\x05\x0B\x64\x00\x0f')
+        msg = bytes(b'\x0B\x64\x00\x0f')
         print(msg)
         cmd_rutin(msg)
 
@@ -92,7 +92,7 @@ class Test_Fun(unittest.TestCase):
 # ----------------------------------------------
     def test_step_motor_rutine (self):
         step_motor_rutine(sm = sms[1], cmd = CMD_STEPS, data = [0, 100] )
-        step_motor_rutine(sm = sms[1], cmd = CMD_HOMERUN, data = [0, 100] )
+        # step_motor_rutine(sm = sms[1], cmd = CMD_HOMERUN, data = [0, 100] )
 
 
 # ----------------------------------------------
