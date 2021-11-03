@@ -1,7 +1,26 @@
+# ----------------------------------------------
+# * import block# :
+#  ----------------------------------------------:
 import pyb, micropython, utime
 micropython.alloc_emergency_exception_buf(100)
 
+
+
+# ----------------------------------------------
+# * Vars block :
+#  ----------------------------------------------:
+
+
+#  ----------------------------------------------:
+# * class encoder(object): : 
+# ** class : 
+#  ----------------------------------------------:
+
+
+#  ----------------------------------------------:
 class encoder(object):
+# ** def __init__(self, pin01, pin02, timeout = 500): : 
+#  ----------------------------------------------:
     def __init__(self, pin01, pin02, timeout = 500):
         self.pin01  = pyb.Pin(pin01, pyb.Pin.IN)
         self.pin02  = pyb.Pin(pin02, pyb.Pin.IN)
@@ -16,10 +35,16 @@ class encoder(object):
         # timer.callback(self.cb)
 
 
+#  ----------------------------------------------:
+# ** def reset_time(self): : 
+#  ----------------------------------------------:
     def reset_time(self):
         self.sensor_time = utime.ticks_add(utime.ticks_ms(), self.timeout)
 
 
+#  ----------------------------------------------:
+# ** def callback_pin01(self, p): : 
+#  ----------------------------------------------:
     def callback_pin01(self, p):
         if self.pin01.value() :
             # print("Pin01 true")
@@ -31,6 +56,9 @@ class encoder(object):
             else: self.counter3 -= 1
             
 
+#  ----------------------------------------------:
+# ** def callback_pin02(self, p): : 
+#  ----------------------------------------------:
     def callback_pin02(self, p):
         if self.pin02.value():
             if self.pin01.value() : self.counter3 += 1
@@ -40,13 +68,24 @@ class encoder(object):
             else: self.counter3 += 1
 
 
+#  ----------------------------------------------:
+# ** def get_data(self): : 
+#  ----------------------------------------------:
     def get_data(self):
         self.reset_time()
         self.last_count = self.counter3
         return self.counter3
 
 
+#  ----------------------------------------------:
+# ** def have_data(self): : 
+#  ----------------------------------------------:
     def have_data(self):
         if utime.ticks_diff( self.sensor_time, utime.ticks_ms) <= 0 and self.last_count != self.counter3: return True
         else: return False
 
+
+#  ----------------------------------------------:
+
+
+# * ----------------------------------------------:
