@@ -59,7 +59,8 @@ def mainloop(test = False):
 def cmd_rutin(msg):
     if msg[0] in DEV_SMS:
         print("Step motor = {0}".format(msg[0]-10))
-        step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
+        # step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
+        sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
 
 
 #  ----------------------------------------------:

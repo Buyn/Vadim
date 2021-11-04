@@ -71,14 +71,32 @@ class Test_Fun(unittest.TestCase):
 # ** def test_step(self):
 #  ----------------------------------------------:
     def test_step(self):
+        self.sd._steps_left = 0
+        self.assertEqual(self.sd._steps_left, 0)      
         self.sd.step()
+        self.assertEqual(self.sd._steps_left, -1)      
 
+        self.sd._steps_left = 10
+        self.assertEqual(self.sd._steps_left, 10)      
+        self.sd.step()
+        self.assertEqual(self.sd._steps_left, 9)      
 
 #  ----------------------------------------------:
 # ** def test_step_on(self):
 #  ----------------------------------------------:
     def test_step_on(self):
+        self.sd._steps_left = 0
+        self.assertEqual(self.sd._steps_left, 0)      
         self.sd.step_on(10, 1000)
+        self.assertEqual(self.sd._steps_left, 0)      
+        self.sd._steps_left = 10
+        self.assertEqual(self.sd._steps_left, 10)      
+        self.sd.step_on(10, 1000)
+        self.assertEqual(self.sd._steps_left, 0)      
+        self.sd._steps_left = -10
+        self.assertEqual(self.sd._steps_left, -10)      
+        self.sd.step_on(10, 1000)
+        self.assertEqual(self.sd._steps_left, 0)      
 
 
 #  ----------------------------------------------:
@@ -86,6 +104,9 @@ class Test_Fun(unittest.TestCase):
 #  ----------------------------------------------:
     def test_rutine(self):
         self.sd.rutine(CMD_STEPS, [100, 10])
+        self.sd.rutine(CMD_SET_OFFTIME, [100, 10])
+        self.sd.rutine(CMD_SET_ONTIME, [100, 10])
+        self.sd.rutine(CMD_10KSTEPS, [0, 10])
 
 # ** ----------------------------------------------:
 # * def suite Init(): : 

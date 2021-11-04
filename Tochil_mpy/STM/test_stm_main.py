@@ -91,10 +91,15 @@ class Test_Fun(unittest.TestCase):
 # ** def test_step_motor_rutine (self): : 
 # ----------------------------------------------
     def test_step_motor_rutine (self):
-        step_motor_rutine(sm = sms[1], cmd = CMD_STEPS, data = [0, 100] )
-        step_motor_rutine(sm = sms[2], cmd = CMD_HOMERUN, data = [0, 100] )
-        step_motor_rutine(sm = sms[3], cmd = CMD_SET_OFFTIME, data = [0, 100] )
-        step_motor_rutine(sm = sms[4], cmd = CMD_SET_ONTIME, data = [0, 200] )
+        msg = bytes(b'\x0A\x0A\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+        msg = bytes(b'\x0B\x64\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+        msg = bytes(b'\x0D\x0A\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
 
 
 # ----------------------------------------------
