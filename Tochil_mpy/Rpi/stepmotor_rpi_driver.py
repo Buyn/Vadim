@@ -1,18 +1,27 @@
 # ----------------------------------------------
 # * import block# :
+#  ----------------------------------------------:
 from i2c_rpi_driver import *
 
 
 # ----------------------------------------------
 # * Vars block :
+#  ----------------------------------------------:
+
 
 #  ----------------------------------------------:
 # * Commands list block :
+#  ----------------------------------------------:
 CMD_STEPS       = 10
 CMD_10KSTEPS    = 11
 CMD_SET_OFFTIME = 20
 CMD_SET_ONTIME  = 21
 CMD_HOMERUN     = 100
+
+
+STT_NOERROR     = 0
+STT_READY     = 100
+
 
 #  ----------------------------------------------:
 # * class stepmotor_rpi_driver: : 
@@ -33,7 +42,7 @@ class stepmotor_rpi_driver:
 #  ----------------------------------------------:
    def steps(self, times = 1):
       if times < 65535: self.normal_steps(times) 
-      else: self.k10step(times)
+      else: return self.k10step(times)
 
 
 #  ----------------------------------------------:
@@ -51,10 +60,10 @@ class stepmotor_rpi_driver:
    def k10step(self, allsteps):
       steps = allsteps % 10000
       ksteps = (allsteps - steps)/10000
-      # if ksteps > 65535: ksteps = 65535
       _ = int(ksteps).to_bytes(2, "big")
       self._stm.write_cmd_arg(self._motor, CMD_10KSTEPS, [_[0], _[1]])
-      sleep(0.001)
+      while not self.is_ready():
+         sleep(0.1)
       if steps : self.normal_steps(steps)
       return steps, ksteps
 
@@ -84,6 +93,30 @@ class stepmotor_rpi_driver:
       if timeout > 65535: timeout = 65535
       _ = (timeout).to_bytes(2, "big")
       self._stm.write_cmd_arg(self._motor, CMD_SET_OFFTIME, [_[0], _[1]])
+
+
+#  ----------------------------------------------:
+# ** def status : 
+#  ----------------------------------------------:
+   def status(self, code): 
+      msg = None
+      while msg == None:
+         try:
+            msg = self._stm.msg_list_size()
+         except e:
+            print("time out error", e)
+         # else:
+         #    msg = 0
+      return msg
+
+
+#  ----------------------------------------------:
+
+# ** def is_ready : 
+#  ----------------------------------------------:
+   def is_ready(self): 
+      if self.status(STT_READY) == None: return False
+      else: return True
 
 
 #  ----------------------------------------------:

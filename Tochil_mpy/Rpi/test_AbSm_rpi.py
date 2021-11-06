@@ -157,11 +157,11 @@ class Test_Fun(unittest.TestCase):
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    # suite.addTest(Test_Init('test_init1'))
-    # suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
+    suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
     suite.addTest(Test_Fun('test_move_to_pos'))
-    # suite.addTest(Test_Fun('test_maintenance'))
-    # suite.addTest(Test_Fun('test_set_speed'))
+    suite.addTest(Test_Fun('test_maintenance'))
+    suite.addTest(Test_Fun('test_set_speed'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
     # end of tests whith infinit loop
