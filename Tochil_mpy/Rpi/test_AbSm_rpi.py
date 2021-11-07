@@ -47,7 +47,7 @@ class Test_Fun(unittest.TestCase):
     @classmethod #setUpClass# {{{
     def setUpClass(self):
         print("*"*33,"*"*33)
-        self.test = AbSm_rpi( stepmotor_rpi_driver(i2c_device(13, 1), 1), A1, B5, 100000)
+        self.test = AbSm_rpi( stepmotor_rpi_driver(i2c_device(13, 1), 1), A1, B5, 10000)
         # self.mw = Main_Windows()
         #     print ("file opened")
         # print("*"*33,"*"*33)
@@ -69,6 +69,8 @@ class Test_Fun(unittest.TestCase):
     def test_move_to_pos(self):
         # self.assertFalse( self.test._pos)
         self.assertEqual( self.test._pos, 0)
+        self.test._port.setport(self.test._dir, False)
+        self.test.is_activ_dir_is_forward(False)
         self.assertFalse(self.test._port.value(self.test._dir))
         r = self.test.move_to_pos(100)
         self.assertEqual( r, 100)
@@ -82,6 +84,32 @@ class Test_Fun(unittest.TestCase):
         self.assertEqual( self.test._pos, 900)
         self.assertEqual( r, 810)
         self.assertFalse(self.test._port.value(self.test._dir))
+        # tests -values
+        r = self.test.move_to_pos(-900)
+        self.assertIsNone(r)
+        self.assertEqual( self.test._pos, 900)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        # tests values = 0
+        r = self.test.move_to_pos(0)
+        self.assertEqual( r, 900)
+        self.assertEqual( self.test._pos, 0)
+        self.assertTrue(self.test._port.value(self.test._dir))
+        # tests pos is lowe then 0
+        self.test._pos = -900
+        r = self.test.move_to_pos(900)
+        self.assertEqual( r, 900)
+        self.assertEqual( self.test._pos, 900)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        # tests values is more then max_pos
+        r = self.test.move_to_pos(90000)
+        self.assertEqual( r, 9100)
+        self.assertEqual( self.test._pos, 10000)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        # tests values = 0
+        r = self.test.move_to_pos(0)
+        self.assertEqual( r, 10000)
+        self.assertEqual( self.test._pos, 0)
+        self.assertTrue(self.test._port.value(self.test._dir))
 
 
 #  ----------------------------------------------:
@@ -124,17 +152,24 @@ class Test_Fun(unittest.TestCase):
 
 
 #  ----------------------------------------------:
+# ** def test_is_ready(self) : 
+#  ----------------------------------------------:
+    def test_is_ready(self):
+        self.assertTrue(self.test.is_ready())
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    # suite.addTest(Test_Init('test_init1'))
-    # suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
-    # suite.addTest(Test_Fun('test_move_to_pos'))
-    # suite.addTest(Test_Fun('test_maintenance'))
+    suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
+    suite.addTest(Test_Fun('test_move_to_pos'))
+    suite.addTest(Test_Fun('test_maintenance'))
+    suite.addTest(Test_Fun('test_is_ready'))
     suite.addTest(Test_Fun('test_set_speed'))
-    # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
     # end of tests whith infinit loop

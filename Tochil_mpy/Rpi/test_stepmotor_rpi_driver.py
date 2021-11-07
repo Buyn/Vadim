@@ -74,6 +74,19 @@ class Test_Fun(unittest.TestCase):
         print(self.sd.steps(1000001))
 
 
+# ** def test_status(self) : 
+#  ----------------------------------------------:
+    def test_status(self):
+        print(self.sd.status(STT_READY))
+
+
+# ** def test_is_ready(self) : 
+#  ----------------------------------------------:
+    def test_is_ready(self):
+        self.assertTrue(self.sd.is_ready())
+
+
+#  ----------------------------------------------:
 # ** def test_homerun(self):
 # ----------------------------------------------
     def test_homerun(self):
@@ -115,14 +128,14 @@ def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_steps'))
+    # suite.addTest(Test_Fun('test_status'))
     # suite.addTest(Test_Fun('test_homerun'))
     # suite.addTest(Test_Fun('test_set_speed'))
     # suite.addTest(Test_Fun('test_multstep'))
-    # suite.addTest(Test_Fun('test_Sharp_cheng'))
-    # suite.addTest(WidgetTestCase('test_widget_resize'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
     # end of tests whith infinit loop
+    # suite.addTest(Test_Fun('test_is_ready'))
     return suite
 # ----------------------------------------------
 

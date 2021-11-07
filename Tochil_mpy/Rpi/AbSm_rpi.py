@@ -44,7 +44,10 @@ class AbSm_rpi:
 # ** def move_to_pos(self, pos): : 
 #  ----------------------------------------------:
    def move_to_pos(self, pos):
+        if self._pos < 0: self._pos = 0
+        if pos < 0: return
         if self._pos == pos: return
+        if pos > self._max_pos : pos = self._max_pos
         if self._pos > pos:
             delta = self._pos - pos
             self.set_backward()
@@ -94,6 +97,13 @@ class AbSm_rpi:
 #  ----------------------------------------------:
    def set_ontime(self, timeout): 
       self._sm.set_ontime(timeout)
+
+
+#  ----------------------------------------------:
+# ** def is_ready : 
+#  ----------------------------------------------:
+   def is_ready(self): 
+      return self._sm.is_ready()
 
 
 #  ----------------------------------------------:

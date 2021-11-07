@@ -30,12 +30,6 @@ sms = [ Step_Driver(step_pin01, end_pin01),
 
 #  ----------------------------------------------:
 # * Commands list block :
-CMD_STEPS       = 10
-CMD_10KSTEPS    = 11
-CMD_SET_OFFTIME = 20
-CMD_SET_ONTIME  = 21
-CMD_HOMERUN     = 100
-
 DEV_STEPMOTOR01 = 10
 DEV_STEPMOTOR02 = 11
 DEV_STEPMOTOR03 = 12
@@ -59,29 +53,8 @@ def mainloop(test = False):
 def cmd_rutin(msg):
     if msg[0] in DEV_SMS:
         print("Step motor = {0}".format(msg[0]-10))
-        step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
-
-
-#  ----------------------------------------------:
-# * def step_motor_rutine(sm , cmd , data  ): : 
-#  ----------------------------------------------:
-def step_motor_rutine(sm, cmd, data):
-    if cmd == CMD_STEPS:
-        r = data[0]*256 + data[1]
-        print("start {0} steps on Step motor".format(r))
-        sm.step_on(r)
-    if cmd == CMD_HOMERUN:
-        r = data[0]*256 + data[1]
-        print("start homerun")
-        sm.homerun(timeout = r)
-    if cmd == CMD_SET_OFFTIME:
-        r = data[0]*256 + data[1]
-        print("set offtime = ", r)
-        sm._offtime = r
-    if cmd == CMD_SET_ONTIME:
-        r = data[0]*256 + data[1]
-        print("set ontime = ", r)
-        sm._ontime = r
+        # step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
+        sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
 
 
 #  ----------------------------------------------:
