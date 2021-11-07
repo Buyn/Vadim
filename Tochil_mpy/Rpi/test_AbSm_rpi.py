@@ -152,6 +152,13 @@ class Test_Fun(unittest.TestCase):
 
 
 #  ----------------------------------------------:
+# ** def test_is_ready(self) : 
+#  ----------------------------------------------:
+    def test_is_ready(self):
+        self.assertTrue(self.test.is_ready())
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 
 # * def suite Init(): : 
@@ -161,6 +168,7 @@ def suite_Init():
     suite.addTest(Test_Fun('test_is_activ_dir_is_forward'))
     suite.addTest(Test_Fun('test_move_to_pos'))
     suite.addTest(Test_Fun('test_maintenance'))
+    suite.addTest(Test_Fun('test_is_ready'))
     suite.addTest(Test_Fun('test_set_speed'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))

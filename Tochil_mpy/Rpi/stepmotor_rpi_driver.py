@@ -64,6 +64,9 @@ class stepmotor_rpi_driver:
       self._stm.write_cmd_arg(self._motor, CMD_10KSTEPS, [_[0], _[1]])
       while not self.is_ready():
          sleep(0.1)
+      print("ksteps = ", ksteps)
+      print("steps = ", steps)
+      sleep(0.01)
       if steps : self.normal_steps(steps)
       return steps, ksteps
 
@@ -115,8 +118,12 @@ class stepmotor_rpi_driver:
 # ** def is_ready : 
 #  ----------------------------------------------:
    def is_ready(self): 
-      if self.status(STT_READY) == None: return False
-      else: return True
+      r = self.status(STT_READY)
+      if r == None: return False
+      else:
+         print("Step motor is ready")
+         print("r\msg = ", r)
+         return True
 
 
 #  ----------------------------------------------:

@@ -105,7 +105,12 @@ class i2c_device:
             bus.write_byte(self.addr, reg)
             return bus.read_byte(self.addr)
          except OSError as exc:
-            print(exc)
+            if exc.args[0]==121:
+              print("stm is busy or lost", exc.args[0])
+              print("waiting...")
+              sleep(1)
+            else:    
+              print(exc)
 
 
 #  ----------------------------------------------:
