@@ -36,6 +36,8 @@ DEV_STEPMOTOR03 = 12
 DEV_STEPMOTOR04 = 13
 DEV_STEPMOTOR05 = 14
 DEV_SMS = range(DEV_STEPMOTOR01, DEV_STEPMOTOR05)
+DEV_ENCODER     = 20
+
 
 #  ----------------------------------------------:
 # * mainloop : 
@@ -55,6 +57,11 @@ def cmd_rutin(msg):
         print("Step motor = {0}".format(msg[0]-10))
         # step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
         sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
+    if msg[0] == DEV_ENCODER:
+        print("Encoder code = {0}".format(msg[0]))
+        print("encoder rutine")
+        # step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
+        # sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
 
 
 #  ----------------------------------------------:
