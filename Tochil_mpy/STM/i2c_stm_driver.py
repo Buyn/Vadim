@@ -36,6 +36,7 @@ class I2C_com(object):
         self.i2c = I2C(port_, I2C.SLAVE, addr=addr_, baudrate=baudrate_)
         self.pinOut01  = PINOUT01
         self.msg_list=[]
+        self.cmd_list=[]
 
 
 # ----------------------------------------------
@@ -71,9 +72,10 @@ class I2C_com(object):
             print("OSError in resiv get_switch", exc)
         else:
           if data == b'\x05':
+            # print("Date =: %r" % data)
             return self.get_msg(4)
-            print("Date = 5")
           if data == b'\x01':
+            self.send_msg()
             print("Date = 1")
           if data == b'\x00':
             self.i2c_send(len(self.msg_list))
@@ -98,9 +100,10 @@ class I2C_com(object):
         if not data:
             print("NO DATA" )
             return False
-        # print("RECV cmd:" , data)
-        self.msg_list.append(data)
+        self.cmd_list.append(data)
         self.i2c_send(len(self.msg_list))
+        # print("RECV cmd:" , data)
+        # print("cmd list size:" , len(self.cmd_list))
         return True
 
 
@@ -122,10 +125,28 @@ class I2C_com(object):
 
 
 # ----------------------------------------------
+# ** def add_msg(self, msg) : 
+# ----------------------------------------------
+    def add_msg(self, msg):
+        self.msg_list.append(msg)
+
+
+# ----------------------------------------------
+# ** def send_msg(self): 
+# ----------------------------------------------
+    def send_msg(self):
+        if len(self.msg_list) == 0 : return None
+        msg = self.msg_list.pop(0)
+        for var in msg:
+          self.i2c_send(var)
+        return msg
+
+
+# ----------------------------------------------
 # ** def rutin(): : 
 # ----------------------------------------------
     def rutin(self):
-        return None if len(self.msg_list) == 0 else self.msg_list.pop(0)
+        return None if len(self.cmd_list) == 0 else self.cmd_list.pop(0)
 
 
 # ----------------------------------------------

@@ -82,9 +82,9 @@ class Test_Fun(unittest.TestCase):
         msg = bytes(b'\x0A\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        msg = bytes(b'\x0B\x64\x00\x0f')
-        print(msg)
-        cmd_rutin(msg)
+        # msg = bytes(b'\x0B\x64\x00\x0f')
+        # print(msg)
+        # cmd_rutin(msg)
 
 
 # ----------------------------------------------
@@ -100,6 +100,20 @@ class Test_Fun(unittest.TestCase):
         msg = bytes(b'\x0D\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
+
+
+# ----------------------------------------------
+# ** def test_encoder_rutine (self) : 
+# ----------------------------------------------
+    def test_encoder_rutine (self):
+        msg = bytes(b'\x14\x0A\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+        self.assertEqual([20, 10, 0, 0], rpi.msg_list[0])
+        msg = bytes(b'\x14\x64\x00\x0f')
+        print(msg)
+        cmd_rutin(msg)
+        self.assertEqual([20, 10, 0, 0], rpi.msg_list[1])
 
 
 # ----------------------------------------------
@@ -133,8 +147,9 @@ def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_mainloop'))
-    # suite.addTest(Test_Fun('test_cmd_rutine'))
-    suite.addTest(Test_Fun('test_step_motor_rutine'))
+    suite.addTest(Test_Fun('test_cmd_rutine'))
+    suite.addTest(Test_Fun('test_encoder_rutine'))
+    # suite.addTest(Test_Fun('test_step_motor_rutine'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))

@@ -83,14 +83,14 @@ class Test_Fun(unittest.TestCase):
 # ----------------------------------------------
     def test_get_msg (self):
         # self.sd.i2c.DATA_TO_RESIV = [4,5,6,7]
-        self.assertEqual(0,len(self.sd.msg_list))
+        self.assertEqual(0,len(self.sd.cmd_list))
         self.sd.get_msg()
-        # print(self.sd.msg_list)
-        self.assertEqual(1,len(self.sd.msg_list))
-        self.assertEqual(1,self.sd.msg_list[0][0])
-        self.assertEqual(4,self.sd.msg_list[0][3])
+        # print(self.sd.cmd_list)
+        self.assertEqual(1,len(self.sd.cmd_list))
+        self.assertEqual(1,self.sd.cmd_list[0][0])
+        self.assertEqual(4,self.sd.cmd_list[0][3])
         # self.sd.get_msg()
-        # self.assertEqual(1,self.sd.msg_list[0])
+        # self.assertEqual(1,self.sd.cmd_list[0])
 
 
 # ----------------------------------------------
@@ -102,9 +102,9 @@ class Test_Fun(unittest.TestCase):
         self.sd.i2c.data_to_resiv = [5,1,2,3,4,5]
         print(self.sd.i2c.recv(1))
         self.assertTrue(self.sd.get_switch())
-        self.assertEqual(1,len(self.sd.msg_list))
-        self.assertEqual(5,self.sd.msg_list[0][0])
-        self.assertEqual(3,self.sd.msg_list[0][3])
+        self.assertEqual(1,len(self.sd.cmd_list))
+        self.assertEqual(5,self.sd.cmd_list[0][0])
+        self.assertEqual(3,self.sd.cmd_list[0][3])
 
 
 # ----------------------------------------------
@@ -127,15 +127,15 @@ class Test_Fun(unittest.TestCase):
         # self.assertEqual( result, ' New!\n test\n test!\n ')
 
 
-# **  def test_rutine(self): : 
+# ** def test_rutine(self): : 
     def test_rutine(self):
-        self.sd.msg_list = []
-        self.assertEqual( len(self.sd.msg_list), 0 )
+        self.sd.cmd_list = []
+        self.assertEqual( len(self.sd.cmd_list), 0 )
         self.assertEqual( self.sd.rutin(), None )
         self.sd.get_msg()
-        self.assertEqual( len(self.sd.msg_list), 1 )
+        self.assertEqual( len(self.sd.cmd_list), 1 )
         self.assertEqual( self.sd.rutin(),  b'\x01\x02\x03\x04')
-        self.assertEqual( len(self.sd.msg_list), 0 )
+        self.assertEqual( len(self.sd.cmd_list), 0 )
         self.assertEqual( self.sd.rutin(), None )
         self.sd.get_msg()
         b = self.sd.rutin()
@@ -152,14 +152,37 @@ class Test_Fun(unittest.TestCase):
 
 
 
+#  ----------------------------------------------:
+# ** test_send_msg : 
+#  ----------------------------------------------:
+    def test_send_msg(self):
+        self.sd.msg_list.append([20, 10, [0, 100]])
+        # self.sd.add_msg([20, 10, [0, 100]])
+        self.assertEqual(1, len(self.sd.msg_list))
+        self.sd.send_msg()
+        self.assertEqual(0, len(self.sd.msg_list))
+
+
+#  ----------------------------------------------:
+# ** test_add_msg : 
+#  ----------------------------------------------:
+    def test_add_msg(self):
+        self.assertEqual(0, len(self.sd.msg_list))
+        self.sd.add_msg([20, 10, [0, 100]])
+        self.assertEqual(1, len(self.sd.msg_list))
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_get_msg'))
-    suite.addTest(Test_Fun('test_rutine'))
-    suite.addTest(Test_Fun('test_get_switch'))
+    # suite.addTest(Test_Init('test_init1'))
+    # suite.addTest(Test_Fun('test_get_msg'))
+    suite.addTest(Test_Fun('test_send_msg'))
+    suite.addTest(Test_Fun('test_add_msg'))
+    # suite.addTest(Test_Fun('test_rutine'))
+    # suite.addTest(Test_Fun('test_get_switch'))
     # infiniti loop
     # suite.addTest(Test_Fun('test_i2c_2s_send'))
     # suite.addTest(Test_Fun('test_print_in'))
