@@ -21,8 +21,8 @@ end_pin02 = pyb.Pin.cpu.B9
 end_pin03 = pyb.Pin.cpu.B8
 end_pin04 = pyb.Pin.cpu.B1 #A
 end_pin05 = pyb.Pin.cpu.A10
-enc_pin01 = pyb.Pin.board.PB4
-enc_pin02 = pyb.Pin.board.PB5
+enc_pin01 = pyb.Pin.board.PB2
+enc_pin02 = pyb.Pin.board.PB10
 #  ----------------------------------------------:
 # ** Devices :
 #  ----------------------------------------------:
