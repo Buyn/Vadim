@@ -97,6 +97,11 @@ class Test_Fun(unittest.TestCase):
         self.sd.callback_pin01('tim')
         # self.sd.counter3 += 1
         self.assertEqual( self.sd.counter3, 2)
+        self.sd.pin01.PIN_VALUE = False
+        self.sd.pin02.PIN_VALUE = 
+        self.sd.callback_pin01('tim')
+        # self.sd.counter3 += 1
+        self.assertEqual( self.sd.counter3, 2)
         # self.assertEqual( test.list_of_chosens, { 'Too sides', 'Antibacterial', "New!", "Full cicle", "test!"})
 
 
@@ -208,11 +213,11 @@ def suite_Init():
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_reset_time'))
-    # suite.addTest(Test_Fun('test_callback_pin01'))
+    suite.addTest(Test_Fun('test_callback_pin01'))
     # suite.addTest(Test_Fun('test_callback_pin02'))
     # suite.addTest(Test_Fun('test_have_data'))
     # suite.addTest(Test_Fun('test_get_data'))
-    suite.addTest(Test_Fun('test_rutine'))
+    # suite.addTest(Test_Fun('test_rutine'))
     # suite.addTest(Test_REPL('test_repl_while'))
     return suite
 		

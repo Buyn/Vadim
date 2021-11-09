@@ -6,10 +6,42 @@ cd "D:\Development\version-control\GitHub\Vadim\Tochil_mpy"
 from stm_main import
 mainloop()
 # -----------------------------------
+# * encoder stm :
+from stm_encod import *
+enc_pin02 = pyb.Pin.board.PB2
+enc_pin01 = pyb.Pin.board.PB10
+encoder = Encoder(enc_pin01, enc_pin02)
+encoder.get_data()
+
+def print_cheng(self, timeout = 1000): 
+    encoder.timeout= timeout
+    while True:
+      if encoder.have_data() : print(encoder.get_data())
+
+print_cheng()
+
+# -----------------------------------
+# * encoder original:
+from encoder import *
+enc_pin02 = pyb.Pin.board.PB2 # work
+# enc_pin01 = pyb.Pin.board.PB10 # not working
+enc_pin01 = pyb.Pin.board.PA3 # Testing
+encoder = encoder(enc_pin01, enc_pin02)
+encoder.counter3 = 0
+encoder.get_data()
+
+def print_cheng(self): 
+    while True:
+      if encoder.have_data() : print(encoder.get_data())
+
+
+# -----------------------------------
 # * get_msg : 
 from i2c_stm_driver import *
 sd = I2C_com()
 sd.get_msg()
+
+
 # -----------------------------------
 # * i2c_2s_send : 
 from i2c_stm_driver import *
