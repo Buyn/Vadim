@@ -147,7 +147,7 @@ def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_mainloop'))
-    # suite.addTest(Test_Fun('test_cmd_rutine'))
+    suite.addTest(Test_Fun('test_cmd_rutine'))
     suite.addTest(Test_Fun('test_encoder_rutine'))
     # suite.addTest(Test_Fun('test_step_motor_rutine'))
     # infiniti loop

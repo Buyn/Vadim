@@ -98,7 +98,9 @@ class Encoder:
 # ** def rutine(cmd , data  ): : 
 #  ----------------------------------------------:
     def rutine(self, cmd, data):
-        return [CMD_GETDATA , *self.convert(self.get_data())]
+       # return [CMD_GETDATA , *self.convert(self.get_data())]
+       r = self.convert(self.get_data())
+       return [CMD_GETDATA , r[0], r[1]]
 
 
 #  ----------------------------------------------:
@@ -106,7 +108,6 @@ class Encoder:
 #  ----------------------------------------------:
     def convert(self, data): 
        r= data % 256
-       # return [(data - r)*256 , r] 
        return [int((data - r)/256 ), r] 
 
 

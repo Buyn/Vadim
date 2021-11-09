@@ -61,7 +61,7 @@ class Test_Fun(unittest.TestCase):
 # ** def test_get_data(self) : 
 # ----------------------------------------------
     def test_get_data(self):
-        self.assertEqual( self.test.get_data(), [11, 12, 13, 14])
+        self.assertEqual( self.test.get_data(), 3342)
         # self.assertEqual( self.test.get_data(), 1)
 
 
@@ -79,6 +79,20 @@ class Test_Fun(unittest.TestCase):
 
 
 #  ----------------------------------------------:
+# ** test_msg_convert : 
+#  ----------------------------------------------:
+    def test_msg_convert(self):
+       self.assertEqual(100, self.test.msg_convert(0, 100))
+       self.assertEqual(256, self.test.msg_convert(1, 0))
+       self.assertEqual(257, self.test.msg_convert(1, 1))
+       self.assertEqual(267, self.test.msg_convert(1, 11))
+        
+
+
+#  ----------------------------------------------:
+
+
+
 # ** ===========================================:
 
 
@@ -89,8 +103,9 @@ def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_get_data'))
-    suite.addTest(Test_Fun('test_status'))
-    suite.addTest(Test_Fun('test_is_ready'))
+    # suite.addTest(Test_Fun('test_status'))
+    # suite.addTest(Test_Fun('test_is_ready'))
+    suite.addTest(Test_Fun('test_msg_convert'))
     return suite
 		
 

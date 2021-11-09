@@ -53,7 +53,7 @@ DEV_ENCODER     = 20
 #  ----------------------------------------------:
 def mainloop(test = False):
     while (True):
-       if rpi.get_switch() and len(rpi.msg_list)>0:
+       if rpi.get_switch() and len(rpi.cmd_list)>0:
            cmd_rutin(rpi.rutin())
        if test: return True
 
@@ -68,7 +68,9 @@ def cmd_rutin(msg):
         sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
     if msg[0] == DEV_ENCODER:
         print("Encoder code = {0}".format(msg[0]))
-        rpi.add_msg([20, *encoder.rutine(msg[1], [msg[2], msg[3]])])
+        # rpi.add_msg([20, *encoder.rutine(msg[1], [msg[2], msg[3]])])
+        r = encoder.rutine(msg[1], [msg[2], msg[3]])
+        rpi.add_msg([20, r[0], r[1], r[2]])
 
 
 #  ----------------------------------------------:
