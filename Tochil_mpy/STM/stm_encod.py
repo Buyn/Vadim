@@ -16,7 +16,7 @@ micropython.alloc_emergency_exception_buf(100)
 # ==============================================
 # * Commands list block * # :
 # ==============================================
-
+CMD_GETDATA = 10
 
 # ==============================================
 # * class Ecoder * # :
@@ -92,6 +92,22 @@ class Encoder:
 #  ----------------------------------------------:
     def reset_time(self):
         self.sensor_time = utime.ticks_add(utime.ticks_ms(), self.timeout)
+
+
+#  ----------------------------------------------:
+# ** def rutine(cmd , data  ): : 
+#  ----------------------------------------------:
+    def rutine(self, cmd, data):
+        return [CMD_GETDATA , *self.convert(self.get_data())]
+
+
+#  ----------------------------------------------:
+# ** def convert : 
+#  ----------------------------------------------:
+    def convert(self, data): 
+       r= data % 256
+       # return [(data - r)*256 , r] 
+       return [int((data - r)/256 ), r] 
 
 
 #  ----------------------------------------------:

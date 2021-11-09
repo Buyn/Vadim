@@ -128,14 +128,14 @@ def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
     suite.addTest(Test_Fun('test_steps'))
-    # suite.addTest(Test_Fun('test_status'))
     # suite.addTest(Test_Fun('test_homerun'))
     # suite.addTest(Test_Fun('test_set_speed'))
     # suite.addTest(Test_Fun('test_multstep'))
+    # suite.addTest(Test_Fun('test_status'))
+    # suite.addTest(Test_Fun('test_is_ready'))
     # tests whith infinit loop
     # suite.addTest(Test_Fun('test_send_2_simbol'))
     # end of tests whith infinit loop
-    # suite.addTest(Test_Fun('test_is_ready'))
     return suite
 # ----------------------------------------------
 

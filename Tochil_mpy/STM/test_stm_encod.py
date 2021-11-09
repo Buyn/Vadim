@@ -152,6 +152,17 @@ class Test_Fun(unittest.TestCase):
 
 
 # ----------------------------------------------:
+# ** test_rutine : 
+#  ----------------------------------------------:
+    def test_rutine(self):
+        r = self.sd.rutine(10, [0,1])
+        self.assertEqual([1,1], self.sd.convert(257))
+        self.assertEqual([0,255], self.sd.convert(255))
+        self.assertEqual([100,0], self.sd.convert(25600))
+        self.assertEqual([10, 0, 0], r)
+
+
+#  ----------------------------------------------:
 # ** ============================================ :
 
 
@@ -194,14 +205,15 @@ class Test_REPL(unittest.TestCase):
 # ==============================================
 def suite_Init():
     suite = unittest.TestSuite()
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Init('test_init1'))
-    suite.addTest(Test_Fun('test_reset_time'))
-    suite.addTest(Test_Fun('test_callback_pin01'))
-    suite.addTest(Test_Fun('test_callback_pin02'))
-    suite.addTest(Test_Fun('test_have_data'))
-    suite.addTest(Test_Fun('test_get_data'))
-    suite.addTest(Test_REPL('test_repl_while'))
+    # suite.addTest(Test_Init('test_init1'))
+    # suite.addTest(Test_Init('test_init1'))
+    # suite.addTest(Test_Fun('test_reset_time'))
+    # suite.addTest(Test_Fun('test_callback_pin01'))
+    # suite.addTest(Test_Fun('test_callback_pin02'))
+    # suite.addTest(Test_Fun('test_have_data'))
+    # suite.addTest(Test_Fun('test_get_data'))
+    suite.addTest(Test_Fun('test_rutine'))
+    # suite.addTest(Test_REPL('test_repl_while'))
     return suite
 		
 

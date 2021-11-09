@@ -73,7 +73,7 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# **    def rutine(sm , cmd , data  ): : 
+# **    def rutine(cmd , data  ): : 
 #  ----------------------------------------------:
     def rutine(self, cmd, data):
         r = self.sum_byte(data)

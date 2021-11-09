@@ -109,9 +109,11 @@ class Test_Fun(unittest.TestCase):
         msg = bytes(b'\x14\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
+        self.assertEqual([20, 10, 0, 0], rpi.msg_list[0])
         msg = bytes(b'\x14\x64\x00\x0f')
         print(msg)
         cmd_rutin(msg)
+        self.assertEqual([20, 10, 0, 0], rpi.msg_list[1])
 
 
 # ----------------------------------------------
