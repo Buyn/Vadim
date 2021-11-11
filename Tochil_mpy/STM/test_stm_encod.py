@@ -97,11 +97,16 @@ class Test_Fun(unittest.TestCase):
         self.sd.callback_pin01('tim')
         # self.sd.counter3 += 1
         self.assertEqual( self.sd.counter3, 2)
-        self.sd.pin01.PIN_VALUE = False
-        self.sd.pin02.PIN_VALUE = 
+        self.sd.pin01.PIN_VALUE = True
+        self.sd.pin02.PIN_VALUE = True
         self.sd.callback_pin01('tim')
         # self.sd.counter3 += 1
-        self.assertEqual( self.sd.counter3, 2)
+        self.assertEqual( self.sd.counter3, 1)
+        self.sd.pin01.PIN_VALUE = False
+        self.sd.pin02.PIN_VALUE = False
+        self.sd.callback_pin01('tim')
+        # self.sd.counter3 += 1
+        self.assertEqual( self.sd.counter3, 0)
         # self.assertEqual( test.list_of_chosens, { 'Too sides', 'Antibacterial', "New!", "Full cicle", "test!"})
 
 
@@ -113,17 +118,28 @@ class Test_Fun(unittest.TestCase):
         self.sd.counter3 = 0
         self.assertEqual( self.sd.counter3, 0)
         self.sd.pin01.PIN_VALUE = True
-        self.sd.pin02.PIN_VALUE = False
-        self.sd.callback_pin02('tim')
-        self.assertEqual( self.sd.counter3, 1)
-        self.sd.pin01.PIN_VALUE = True
         self.assertEqual( self.sd.pin01.value(), True)
         self.sd.pin02.PIN_VALUE = True
         self.assertEqual( self.sd.pin02.value(), True)
         self.sd.callback_pin02('tim')
+        self.assertEqual( self.sd.counter3, 1)
+        self.sd.pin01.PIN_VALUE = False
+        self.assertEqual( self.sd.pin01.value(), False)
+        self.sd.pin02.PIN_VALUE = False
+        self.assertEqual( self.sd.pin02.value(), False)
+        self.sd.callback_pin02('tim')
         # self.sd.counter3 += 1
         self.assertEqual( self.sd.counter3, 2)
-        # self.assertEqual( test.list_of_chosens, { 'Too sides', 'Antibacterial', "New!", "Full cicle", "test!"})
+        self.sd.pin01.PIN_VALUE = False
+        self.sd.pin02.PIN_VALUE = True
+        self.sd.callback_pin02('tim')
+        # self.sd.counter3 += 1
+        self.assertEqual( self.sd.counter3, 1)
+        self.sd.pin01.PIN_VALUE = True
+        self.sd.pin02.PIN_VALUE = False
+        self.sd.callback_pin02('tim')
+        # self.sd.counter3 += 1
+        self.assertEqual( self.sd.counter3, 0)
 
 
 # ----------------------------------------------:
@@ -214,7 +230,7 @@ def suite_Init():
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_reset_time'))
     suite.addTest(Test_Fun('test_callback_pin01'))
-    # suite.addTest(Test_Fun('test_callback_pin02'))
+    suite.addTest(Test_Fun('test_callback_pin02'))
     # suite.addTest(Test_Fun('test_have_data'))
     # suite.addTest(Test_Fun('test_get_data'))
     # suite.addTest(Test_Fun('test_rutine'))
