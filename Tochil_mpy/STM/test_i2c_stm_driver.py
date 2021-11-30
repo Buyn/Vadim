@@ -108,13 +108,6 @@ class Test_Fun(unittest.TestCase):
 
 
 # ----------------------------------------------
-# ** def test_diode_com(self):
-# ----------------------------------------------
-    def test_diode_com(self):
-        self.sd.diode_com()
-
-
-# ----------------------------------------------
 # ** def test_i2c_exec(self):
     def test_i2c_exec(self ):
         self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
@@ -180,6 +173,7 @@ def suite_Init():
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_get_msg'))
     suite.addTest(Test_Fun('test_send_msg'))
+    # suite.addTest(Test_Fun('test_*'))
     suite.addTest(Test_Fun('test_add_msg'))
     # suite.addTest(Test_Fun('test_rutine'))
     # suite.addTest(Test_Fun('test_get_switch'))

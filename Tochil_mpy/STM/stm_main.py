@@ -4,10 +4,16 @@
 from i2c_stm_driver import *
 from driver_m import *
 from stm_encod import *
+import utime
 
 
 # ----------------------------------------------
 # * Vars block :
+runing = False
+# scl1 = PB6
+# sda1 = PB7
+i2cpin01 = pyb.Pin.cpu.B6
+# i2cpin01 = pyb.Pin.cpu.B7
 #  ----------------------------------------------:
 # ** Pins :
 #  ----------------------------------------------:
@@ -49,17 +55,20 @@ DEV_ENCODER     = 20
 
 
 #  ----------------------------------------------:
-# * mainloop : 
+# * mainloop :
 #  ----------------------------------------------:
-def mainloop(test = False):
+# async def mainloop(test = False):
+def mainloop(test=False):
     while (True):
-       if rpi.get_switch() and len(rpi.cmd_list)>0:
-           cmd_rutin(rpi.rutin())
-       if test: return True
+        if rpi.get_switch() and len(rpi.cmd_list) > 0:
+            cmd_rutin(rpi.rutin())
+        # utime.sleep_us(1000)
+        if test:
+            return True
 
 
 #  ----------------------------------------------:
-# * def cmd_rutin(msg) : 
+# * def cmd_rutin(msg) :
 #  ----------------------------------------------:
 def cmd_rutin(msg):
     if msg[0] in DEV_SMS:
@@ -74,7 +83,51 @@ def cmd_rutin(msg):
 
 
 #  ----------------------------------------------:
-# * __main__ : 
+# * def t_find_pin :
+#  ----------------------------------------------:
+def t_find_pin():
+    global runing
+    pin01 = pyb.Pin(i2cpin01, pyb.Pin.IN)
+    # pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=call_test)
+    # pin01.irq(trigger=pyb.Pin.IRQ_FALLING, handler=call_test)
+    pin01.irq(trigger=pyb.Pin.IRQ_RISING, handler=call_test)
+    print("", )
+    return True
+
+
+#  ----------------------------------------------:
+# * def call_test(p): :
+#  ----------------------------------------------:
+def call_test(p):
+    global runing
+    if runing:
+        print("alredy run")
+        return
+    ts1 = utime.ticks_cpu()
+    runing = True
+    rutin_one()
+    ts2 = utime.ticks_cpu()
+    runing = False
+    print("end call start= {0:}, end= {1:} ".format(ts1, ts2))
+
+
+#  ----------------------------------------------:
+# t_find_pin()
+#  ----------------------------------------------:
+# * rurin_one :
+#  ----------------------------------------------:
+# async def rutin_one():
+def rutin_one():
+    # print("rutin start", )
+    # print("rutin run", )
+    if rpi.get_switch() and len(rpi.cmd_list) > 0:
+        cmd_rutin(rpi.rutin())
+    # utime.sleep_us(1000)
+    # print("rutin end", )
+
+
+#  ----------------------------------------------:
+# * __main__ :
 #  ----------------------------------------------:
 if __name__ == "__main__":
     pass

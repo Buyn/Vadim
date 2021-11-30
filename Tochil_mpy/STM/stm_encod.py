@@ -30,7 +30,7 @@ class Encoder:
     def __init__(self, pin01, pin02, timeout = 500):
         self.pin01  = pyb.Pin(pin01, pyb.Pin.IN)
         self.pin02  = pyb.Pin(pin02, pyb.Pin.IN)
-        self.counter3 = 0
+        self.counter3 = 100
         self.last_count = 0;
         # btn = machine.Pin(pyb.Pin.board.PB4, machine.Pin.IN)
         self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin01)
@@ -80,6 +80,7 @@ class Encoder:
     def get_data(self):
         self.reset_time()
         self.last_count = self.counter3
+        print("encoder = ", self.counter3)
         return self.counter3
 
 

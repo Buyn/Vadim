@@ -7,18 +7,22 @@ from stm_main import
 mainloop()
 # -----------------------------------
 # * encoder stm :
+# enc_pin02 = pyb.Pin.board.PB2 # work
+# enc_pin01 = pyb.Pin.board.PB10 # not working
+# enc_pin01 = pyb.Pin.board.PA3 # Testing
+
 from stm_encod import *
 enc_pin02 = pyb.Pin.board.PB2
 enc_pin01 = pyb.Pin.board.PB10
 encoder = Encoder(enc_pin01, enc_pin02)
 encoder.get_data()
 
-def print_cheng(self, timeout = 1000): 
+def print_cheng( timeout = 1000): 
     encoder.timeout= timeout
     while True:
       if encoder.have_data() : print(encoder.get_data())
 
-print_cheng()
+encoder.print_cheng()
 
 # -----------------------------------
 # * encoder original:

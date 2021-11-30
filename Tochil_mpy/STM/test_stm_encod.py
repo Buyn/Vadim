@@ -36,6 +36,13 @@ class Test_Init(unittest.TestCase):
 
             				
 # ----------------------------------------------
+# ** test_t_find_pin : 
+#  ----------------------------------------------:
+    def test_t_find_pin(self):
+        self.assertEqual(t_find_pin(), True)
+
+
+#  ----------------------------------------------:
 # ** ===========================================:
 
 
@@ -229,8 +236,8 @@ def suite_Init():
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Init('test_init1'))
     # suite.addTest(Test_Fun('test_reset_time'))
-    suite.addTest(Test_Fun('test_callback_pin01'))
-    suite.addTest(Test_Fun('test_callback_pin02'))
+    # suite.addTest(Test_Fun('test_callback_pin01'))
+    # suite.addTest(Test_Fun('test_callback_pin02'))
     # suite.addTest(Test_Fun('test_have_data'))
     # suite.addTest(Test_Fun('test_get_data'))
     # suite.addTest(Test_Fun('test_rutine'))
