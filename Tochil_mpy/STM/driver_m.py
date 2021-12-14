@@ -26,7 +26,7 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# **    def __init__(self, pin, longs = 50): : 
+# **    def __init__: : 
 #  ----------------------------------------------:
     def __init__(self, step_pin, end_pin, ontime = 100, offtime = 100):
         self.pin  = pyb.Pin(step_pin, pyb.Pin.OUT)
@@ -39,7 +39,7 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# **    def step(self): : 
+# **    def step: : 
 #  ----------------------------------------------:
     def step(self):
         self.pin.value(1)
@@ -49,7 +49,20 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# **    def step_on(self, steps, timeout): : 
+# ** def step_ecoder: 
+#  ----------------------------------------------:
+    def step_ecoder(self, corrector):
+        corrector()
+        self.pin.value(1)
+        corrector()
+        self._steps_left-=1
+        # utime.sleep_us(self._ontime)
+        self.pin.value(0)
+        corrector()
+
+
+#  ----------------------------------------------:
+# ** def step_on: 
 #  ----------------------------------------------:
     def step_on(self, steps, offtime = None):
         if not offtime: offtime = self._offtime
@@ -62,8 +75,21 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
+# ** def step_on_encod: 
+#  ----------------------------------------------:
+    def step_on_encod(self, steps, enc, offtime = None):
+        steps = self.sum_byte(steps)
+        if not offtime: offtime = self._offtime
+        if self._steps_left<0: self._steps_left =0
+        self._steps_left += steps
+        while self._steps_left>0:
+            # print(self._steps_left)    
+            self.step_ecoder(enc.corrector)
+            utime.sleep_us(offtime)
 
-# **    def homerun(self, timeout = 1000): : 
+
+#  ----------------------------------------------:
+# **    def homerun : 
 #  ----------------------------------------------:
     def homerun(self, timeout = 1000):
         while True:
@@ -73,7 +99,7 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# **    def rutine(cmd , data  ): : 
+# **    def rutine: : 
 #  ----------------------------------------------:
     def rutine(self, cmd, data):
         r = self.sum_byte(data)
@@ -96,7 +122,7 @@ class Step_Driver(object):
 
 
 #  ----------------------------------------------:
-# ** def sum_byte(self, data) : 
+# ** def sum_byte : 
 #  ----------------------------------------------:
     def sum_byte(self, data):
             return  data[0]*256 + data[1]

@@ -18,12 +18,12 @@ SM_R            = 13 #A
 
 
 #  ----------------------------------------------:
-# * AbSm_rpi: : 
+# * AbSm_rpi: :
 class AbSm_rpi:
 #  ----------------------------------------------:
-# ** __init__ : 
-   def __init__(self, sm, enbl, dir, max_pos):
+# ** __init__ :
 #  ----------------------------------------------:
+   def __init__(self, sm, enbl, dir, max_pos):
       self._sm = sm
       self._enbl = enbl
       self._dir = dir
@@ -34,25 +34,25 @@ class AbSm_rpi:
 
 
 #  ----------------------------------------------:
-# ** def is_activ_dir_is_forward(self, forward): : 
+# ** def is_activ_dir_is_forward(self, forward): :
 #  ----------------------------------------------:
    def is_activ_dir_is_forward(self, forward):
        self._forward = forward
 
 
 #  ----------------------------------------------:
-# ** def move_to_pos(self, pos): : 
+# ** def move_to_pos(self, pos):
 #  ----------------------------------------------:
    def move_to_pos(self, pos):
         if self._pos < 0: self._pos = 0
         if pos < 0: return
-        if pos > self._max_pos : pos = self._max_pos
+        if pos > self._max_pos: pos = self._max_pos
         if self._pos == pos: return
         if self._pos > pos:
             delta = self._pos - pos
             self.set_backward()
         if self._pos < pos:
-            delta = pos - self._pos 
+            delta = pos - self._pos
             self.set_forward()
         self._sm.steps(delta)
         self._pos = pos

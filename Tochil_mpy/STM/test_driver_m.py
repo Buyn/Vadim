@@ -13,10 +13,10 @@ from driver_m import *
 class Test_Init(unittest.TestCase):
 
 
-    @patch('micropython.alloc_emergency_exception_buf')
-    def test_load_image(self, imread):
-        print('alloc_emergency_exception_buf=', imread)
-        assert imread.called
+    # @patch('micropython.alloc_emergency_exception_buf')
+    # def test_load_image(self, imread):
+    #     print('alloc_emergency_exception_buf=', imread)
+    #     assert imread.called
 
 
 #  ----------------------------------------------:
@@ -39,10 +39,10 @@ class Test_Init(unittest.TestCase):
 # * class Test_Fun(unittest.TestCase): : 
 # ** ----------------------------------------------:
 class Test_Fun(unittest.TestCase):
-    @patch('micropython.alloc_emergency_exception_buf')
-    def test_load_image(self, imread):
-        print('alloc_emergency_exception_buf=', imread)
-        assert imread.called
+    # @patch('micropython.alloc_emergency_exception_buf')
+    # def test_load_image(self, imread):
+    #     print('alloc_emergency_exception_buf=', imread)
+    #     assert imread.called
 
 
 # ** @classmethod #setUpClass#  : 
@@ -81,6 +81,23 @@ class Test_Fun(unittest.TestCase):
         self.sd.step()
         self.assertEqual(self.sd._steps_left, 9)      
 
+
+#  ----------------------------------------------:
+# ** def test_step_encoder(self) : 
+#  ----------------------------------------------:
+    def test_step_encoder(self):
+        self.sd._steps_left = 0
+        self.assertEqual(self.sd._steps_left, 0)      
+        from stm_encod import Encoder
+        enc = Encoder(pyb.Pin.cpu.C13, pyb.Pin.cpu.A5)
+        self.sd.step_ecoder(enc.corrector)
+        self.assertEqual(self.sd._steps_left, -1)      
+        self.sd._steps_left = 10
+        self.assertEqual(self.sd._steps_left, 10)      
+        self.sd.step()
+        self.assertEqual(self.sd._steps_left, 9)      
+
+
 #  ----------------------------------------------:
 # ** def test_step_on(self):
 #  ----------------------------------------------:
@@ -96,6 +113,26 @@ class Test_Fun(unittest.TestCase):
         self.sd._steps_left = -10
         self.assertEqual(self.sd._steps_left, -10)      
         self.sd.step_on(10, 1000)
+        self.assertEqual(self.sd._steps_left, 0)      
+
+
+#  ----------------------------------------------:
+# ** def test_step_on_enc(self):
+#  ----------------------------------------------:
+    def test_step_on_encod(self):
+        self.sd._steps_left = 0
+        self.assertEqual(self.sd._steps_left, 0)      
+        from stm_encod import Encoder
+        enc = Encoder(pyb.Pin.cpu.C13, pyb.Pin.cpu.A5)
+        self.sd.step_on_encod([0, 10], enc, offtime = 1000 )
+        self.assertEqual(self.sd._steps_left, 0)      
+        self.sd._steps_left = 10
+        self.assertEqual(self.sd._steps_left, 10)      
+        self.sd.step_on_encod([0, 10], enc, offtime = 1000 )
+        self.assertEqual(self.sd._steps_left, 0)      
+        self.sd._steps_left = -10
+        self.assertEqual(self.sd._steps_left, -10)      
+        self.sd.step_on_encod([0, 10], enc, offtime = 1000 )
         self.assertEqual(self.sd._steps_left, 0)      
 
 
@@ -126,7 +163,7 @@ def suite_Init():
 # (compile " python -m unittest D:/Development/version-control/GitHub/Vadim/Tochil/main_test.py ")
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    runner = unittest.TextTestRunner()
-    runner.run(suite_Init())
-    # unittest.main()
+    # runner = unittest.TextTestRunner()
+    # runner.run(suite_Init())
+    unittest.main()
 # * ----------------------------------------------:

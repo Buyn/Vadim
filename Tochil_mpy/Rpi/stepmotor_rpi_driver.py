@@ -24,13 +24,13 @@ STT_READY     = 100
 
 
 #  ----------------------------------------------:
-# * class stepmotor_rpi_driver: : 
+# * class stepmotor_rpi_driver: :
 # ** class **-------------------------------------:
 class stepmotor_rpi_driver:
 
 
 #  ----------------------------------------------:
-# ** __init__ : 
+# ** __init__ :
 #  ----------------------------------------------:
    def __init__(self, stm, motor):
       self._stm = stm
@@ -38,17 +38,17 @@ class stepmotor_rpi_driver:
 
 
 #  ----------------------------------------------:
-# ** def steps(self, times = 1): : 
+# ** def steps(self, times = 1): :
 #  ----------------------------------------------:
-   def steps(self, times = 1):
-      if times < 65535: self.normal_steps(times) 
+   def steps(self, times=1):
+      if times < 65535: self.normal_steps(times)
       else: return self.k10step(times)
 
 
 #  ----------------------------------------------:
-# ** def normal_steps(self, times = 1): : 
+# ** def normal_steps(self, times = 1): :
 #  ----------------------------------------------:
-   def normal_steps(self, times = 1):
+   def normal_steps(self, times=1):
       _ = (times).to_bytes(2, "big")
       self._stm.write_cmd_arg(self._motor, CMD_STEPS, [_[0], _[1]])
       # sleep(0.0001)
@@ -72,7 +72,7 @@ class stepmotor_rpi_driver:
 
 
 #  ----------------------------------------------:
-# ** def homerun : 
+# ** def homerun :
 #  ----------------------------------------------:
    def homerun(self, timeout = 0): 
       if timeout > 65535: timeout = 65535

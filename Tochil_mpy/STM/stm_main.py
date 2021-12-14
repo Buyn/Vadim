@@ -9,6 +9,7 @@ import utime
 
 # ----------------------------------------------
 # * Vars block :
+# ** variabls :
 runing = False
 # scl1 = PB6
 # sda1 = PB7
@@ -52,6 +53,7 @@ DEV_STEPMOTOR04 = 13
 DEV_STEPMOTOR05 = 14
 DEV_SMS = range(DEV_STEPMOTOR01, DEV_STEPMOTOR05)
 DEV_ENCODER     = 20
+DEV_STEP_ENC    = 25
 
 
 #  ----------------------------------------------:
@@ -73,11 +75,13 @@ def mainloop(test=False):
 def cmd_rutin(msg):
     if msg[0] in DEV_SMS:
         print("Step motor = {0}".format(msg[0]-10))
-        # step_motor_rutine(sms[msg[0]-10], msg[1], [msg[2], msg[3]])
-        sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
+        if msg[1] == DEV_STEP_ENC:
+            print("Step Encoder code = {0}".format(msg[0]))
+            sms[msg[0]-10].step_on_encod([msg[2], msg[3]], encoder)
+        else:
+            sms[msg[0]-10].rutine(msg[1], [msg[2], msg[3]])
     if msg[0] == DEV_ENCODER:
         print("Encoder code = {0}".format(msg[0]))
-        # rpi.add_msg([20, *encoder.rutine(msg[1], [msg[2], msg[3]])])
         r = encoder.rutine(msg[1], [msg[2], msg[3]])
         rpi.add_msg([20, r[0], r[1], r[2]])
 
@@ -108,7 +112,7 @@ def call_test(p):
     rutin_one()
     ts2 = utime.ticks_cpu()
     runing = False
-    print("end call start= {0:}, end= {1:} ".format(ts1, ts2))
+    # print("end call start= {0:}, end= {1:} ".format(ts1, ts2))
 
 
 #  ----------------------------------------------:
@@ -120,13 +124,49 @@ def call_test(p):
 def rutin_one():
     # print("rutin start", )
     # print("rutin run", )
+    encoder.gipo_checker()
     if rpi.get_switch() and len(rpi.cmd_list) > 0:
         cmd_rutin(rpi.rutin())
+    encoder.gipo_checker()
     # utime.sleep_us(1000)
     # print("rutin end", )
 
 
 #  ----------------------------------------------:
+# * class Enc_exp : 
+# import pyb, machine
+import pyb
+class Enc_exp:
+
+
+    def __init__(self, pin):
+        self.pin = pyb.Pin(pin, pyb.Pin.IN)
+        self.pin.irq(trigger= pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_testF)
+        # self.led = machine.Pin(pyb.Pin.board.PC13, machine.Pin.OUT)
+        self.led = pyb.Pin(pyb.Pin.board.PC13, pyb.Pin.OUT)
+        self.arg = 1
+        self.sume = 0
+        
+
+    def callback_testF(self, arg):
+        self.arg = arg
+        self.sume += 1
+
+
+    def in_led(self, t, value, debug = False):
+        while True:
+            self.led.value(0)
+            # pyb.delay(t)
+            utime.sleep_us(t)
+            self.led.value(1)
+            if self.sume >= value:
+                print("value= ", value)
+                self.sume = 0
+            # pyb.delay(t)
+            utime.sleep_us(t)
+            if debug: break
+        
+
 # * __main__ :
 #  ----------------------------------------------:
 if __name__ == "__main__":

@@ -49,6 +49,21 @@ class Test_Init(unittest.TestCase):
 
 
 # ----------------------------------------------
+# ** test_enc_exp : 
+# ----------------------------------------------
+    def test_enc_exp(self):
+        # enc_pin01 = pyb.Pin.board.PB2
+        # enc_pin02 = pyb.Pin.board.PB10
+        t = Enc_exp(enc_pin01)
+        self.assertEqual(t.sume, 0)
+        t.callback_testF(1)
+        self.assertEqual(t.sume, 1)
+        t.in_led(1000, 100, debug=True)
+        a = t.arg
+        print("Arg = ", a)
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 # * class Test_Fun(unittest.TestCase): : 
 # ** ----------------------------------------------:
@@ -97,6 +112,9 @@ class Test_Fun(unittest.TestCase):
         print(msg[2])
         msg = bytes(b'\x0A\x0A\x00\x0f')
         print(msg)
+        msg = bytes(b'\x0A\x19\x00\x0f')
+        cmd_rutin(msg)
+        print(msg)
         cmd_rutin(msg)
         # msg = bytes(b'\x0B\x64\x00\x0f')
         # print(msg)
@@ -126,11 +144,11 @@ class Test_Fun(unittest.TestCase):
         msg = bytes(b'\x14\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        self.assertEqual([20, 10, 0, 0], rpi.msg_list[0])
+        self.assertEqual([20, 10, 3, 232], rpi.msg_list[0])
         msg = bytes(b'\x14\x64\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        self.assertEqual([20, 10, 0, 0], rpi.msg_list[1])
+        self.assertEqual([20, 10, 3, 232], rpi.msg_list[1])
 
 
 # ----------------------------------------------

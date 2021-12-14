@@ -107,9 +107,21 @@ class Test_Fun(unittest.TestCase):
         self.assertFalse(self.test._port.value(self.test._dir))
         # tests values = 0
         r = self.test.move_to_pos(0)
-        self.assertEqual( r, 10000)
-        self.assertEqual( self.test._pos, 0)
+        self.assertEqual(r, 10000)
+        self.assertEqual(self.test._pos, 0)
         self.assertTrue(self.test._port.value(self.test._dir))
+
+
+#  ----------------------------------------------:
+# ** def test_move_to_pos_encoder(self): : 
+#  ----------------------------------------------:
+    def test_move_to_pos_encoder(self):
+        # self.assertFalse( self.test._pos)
+        self.assertEqual(self.test._pos, 0)
+        self.test._port.setport(self.test._dir, False)
+        self.test.is_activ_dir_is_forward(False)
+        self.assertFalse(self.test._port.value(self.test._dir))
+        self.test.move_to_pos(100, enc=True)
 
 
 #  ----------------------------------------------:

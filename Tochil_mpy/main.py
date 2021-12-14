@@ -1,3 +1,4 @@
 # main.py -- put your code here!
 from stm_main import *
-mainloop()
+# mainloop()
+t_find_pin()

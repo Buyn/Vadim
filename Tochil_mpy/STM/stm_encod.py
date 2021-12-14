@@ -30,13 +30,17 @@ class Encoder:
     def __init__(self, pin01, pin02, timeout = 500):
         self.pin01  = pyb.Pin(pin01, pyb.Pin.IN)
         self.pin02  = pyb.Pin(pin02, pyb.Pin.IN)
-        self.counter3 = 100
+        self.counter3 = 1000
         self.last_count = 0;
-        # btn = machine.Pin(pyb.Pin.board.PB4, machine.Pin.IN)
-        self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin01)
         # IRQ_RISING_FALLING = "IRQ_FALLING"
-        self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin02)
+        # self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin01)
+        # self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin02)
+        self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin01)
+        self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin02)
         self.timeout= timeout
+        self._last_pin01 = False
+        self._last_pin02 = False
+        self.gipo_checker()
         self.sensor_time = 0
         self.reset_time()
         # timer.callback(self.cb)
@@ -46,14 +50,6 @@ class Encoder:
 # ** def callback_pin01(self, p): : 
 #  ----------------------------------------------:
     def callback_pin01(self, p):
-        # if self.pin01.value() :
-        #     # print("Pin01 true")
-        #     if self.pin02.value() : self.counter3 -= 1
-        #     else: self.counter3 += 1
-        # else:
-        #     # print("Pin01 false")
-        #     if self.pin02.value() : self.counter3 += 1
-        #     else: self.counter3 -= 1
         if self.pin02.value() == self.pin01.value() :
               self.counter3 -= 1
         else: self.counter3 += 1
@@ -63,15 +59,70 @@ class Encoder:
 # ** def callback_pin02(self, p): : 
 #  ----------------------------------------------:
     def callback_pin02(self, p):
-        # if self.pin02.value():
-        #     if self.pin01.value() : self.counter3 += 1
-        #     else: self.counter3 -= 1
-        # else:
-        #     if (self.pin02.value() == 1): self.counter3 -= 1
-        #     else: self.counter3 += 1
         if self.pin02.value() == self.pin01.value() :
               self.counter3 += 1
         else: self.counter3 -= 1
+
+
+#  ----------------------------------------------:
+# ** def new_callback_pin01(self, p): : 
+#  ----------------------------------------------:
+    def new_callback_pin01(self, p):
+        # if self.pin02.value() == self.pin01.value() :
+        #       self.counter3 -= 1
+        # else: self.counter3 += 1
+        self._last_pin01 = not self._last_pin01
+        if self._last_pin02 == self._last_pin01 :
+              self.counter3 -= 1
+        else: self.counter3 += 1
+            
+
+#  ----------------------------------------------:
+# ** def new_callback_pin02(self, p): : 
+#  ----------------------------------------------:
+    def new_callback_pin02(self, p):
+    #     if self.pin02.value() == self.pin01.value() :
+    #           self.counter3 += 1
+    #     else: self.counter3 -= 1
+        self._last_pin02 = not self._last_pin02
+        if self._last_pin02 == self._last_pin01:
+              self.counter3 += 1
+        else: self.counter3 -= 1
+
+
+#  ----------------------------------------------:
+# ** def gipo_checker : 
+#  ----------------------------------------------:
+    def gipo_checker(self): 
+        if self._last_pin01 != self.pin01.value():
+            self._last_pin01 = not self._last_pin01
+            print("Pin01 wrong!")
+        if self._last_pin02 != self.pin02.value():
+            self._last_pin02 = not self._last_pin02
+            print("Pin02 wrong!")
+
+
+#  ----------------------------------------------:
+# ** def corrector(self) : 
+#  ----------------------------------------------:
+    def corrector(self): 
+        p1, p2 = False, False
+        if self._last_pin01 != self.pin01.value():
+            p1 = True
+            # self._last_pin01 = not self._last_pin01
+            # print("Pin01 wrong!")
+        if self._last_pin02 != self.pin02.value():
+            p2 = True
+            # self._last_pin02 = not self._last_pin02
+            # print("Pin02 wrong!")
+        if p1 and p2:
+            print("Wrong in Two Pins")
+            self.gipo_checker()
+            return 
+        if p1:
+            self.new_callback_pin01("From corector")
+        if p2:
+            self.new_callback_pin02("From corector")
 
 
 #  ----------------------------------------------:
