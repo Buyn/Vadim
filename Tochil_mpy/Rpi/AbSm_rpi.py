@@ -43,7 +43,7 @@ class AbSm_rpi:
 #  ----------------------------------------------:
 # ** def move_to_pos(self, pos):
 #  ----------------------------------------------:
-   def move_to_pos(self, pos):
+   def move_to_pos(self, pos, enc=False):
         if self._pos < 0: self._pos = 0
         if pos < 0: return
         if pos > self._max_pos: pos = self._max_pos
@@ -54,7 +54,7 @@ class AbSm_rpi:
         if self._pos < pos:
             delta = pos - self._pos
             self.set_forward()
-        self._sm.steps(delta)
+        self._sm.steps(delta, enc=enc)
         self._pos = pos
         return delta
 

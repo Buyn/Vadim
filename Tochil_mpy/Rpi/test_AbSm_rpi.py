@@ -8,7 +8,7 @@ sys.modules['micropython'] = MagicMock()
 from AbSm_rpi import *
 
 # ----------------------------------------------
-# * class Test_Init : 
+# * class Test_Init :
 # ** ----------------------------------------------:
 class Test_Init(unittest.TestCase):
 
@@ -18,7 +18,7 @@ class Test_Init(unittest.TestCase):
     #     print('alloc_emergency_exception_buf=', imread)
     #     assert imread.called
 
-# ** def test_init1 : 
+# ** def test_init1 :
 #  ----------------------------------------------:
     def test_init1(self):# {{{
         mw = None
@@ -34,15 +34,15 @@ class Test_Init(unittest.TestCase):
             				
 # ----------------------------------------------
 # ** ----------------------------------------------:
-# * class Test_Fun(unittest.TestCase): : 
+# * class Test_Fun(unittest.TestCase): :
 # ** ----------------------------------------------:
 class Test_Fun(unittest.TestCase):
-    @patch('micropython.alloc_emergency_exception_buf')
-    def test_load_image(self, imread):
-        print('alloc_emergency_exception_buf=', imread)
-        assert imread.called
+    # @patch('micropython.alloc_emergency_exception_buf')
+    # def test_load_image(self, imread):
+    #     print('alloc_emergency_exception_buf=', imread)
+    #     assert imread.called
 
-# ** @classmethod #setUpClass#  : 
+# ** @classmethod #setUpClass#  :
 #  ----------------------------------------------:
     @classmethod #setUpClass# {{{
     def setUpClass(self):
@@ -64,7 +64,7 @@ class Test_Fun(unittest.TestCase):
         print("*"*33,"*"*33)
 
 # ----------------------------------------------
-# ** def test_move_to_pos(self): : 
+# ** def test_move_to_pos(self):
 #  ----------------------------------------------:
     def test_move_to_pos(self):
         # self.assertFalse( self.test._pos)
@@ -113,7 +113,7 @@ class Test_Fun(unittest.TestCase):
 
 
 #  ----------------------------------------------:
-# ** def test_move_to_pos_encoder(self): : 
+# ** def test_move_to_pos_encoder(self):
 #  ----------------------------------------------:
     def test_move_to_pos_encoder(self):
         # self.assertFalse( self.test._pos)
@@ -122,6 +122,11 @@ class Test_Fun(unittest.TestCase):
         self.test.is_activ_dir_is_forward(False)
         self.assertFalse(self.test._port.value(self.test._dir))
         self.test.move_to_pos(100, enc=True)
+        self.assertEqual(self.test._pos, 100)
+        self.test.move_to_pos(200, enc=False)
+        self.assertEqual(self.test._pos, 200)
+        self.test.move_to_pos(300)
+        self.assertEqual(self.test._pos, 300)
 
 
 #  ----------------------------------------------:
@@ -173,7 +178,7 @@ class Test_Fun(unittest.TestCase):
 #  ----------------------------------------------:
 # ** ----------------------------------------------:
 
-# * def suite Init(): : 
+# * def suite Init(): :
 def suite_Init():
     suite = unittest.TestSuite()
     suite.addTest(Test_Init('test_init1'))
@@ -189,13 +194,13 @@ def suite_Init():
 # ----------------------------------------------
 
 
-# * Test runer : 
+# * Test runer :
 # ----------------------------------------------
 # (compile " D:/Development/version-control/GitHub/Vadim/Tochil/main_test.py -k init")
 # (compile " python -m unittest D:/Development/version-control/GitHub/Vadim/Tochil/main_test.py ")
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    runner = unittest.TextTestRunner()
-    runner.run(suite_Init())
-    # unittest.main()
+    # runner = unittest.TextTestRunner()
+    # runner.run(suite_Init())
+    unittest.main()
 # * ----------------------------------------------:

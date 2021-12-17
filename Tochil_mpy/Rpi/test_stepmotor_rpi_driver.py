@@ -35,10 +35,10 @@ class Test_Init(unittest.TestCase):
 # * class Test_Fun(unittest.TestCase): : 
 # ** ----------------------------------------------:
 class Test_Fun(unittest.TestCase):
-    @patch('micropython.alloc_emergency_exception_buf')
-    def test_load_image(self, imread):
-        print('alloc_emergency_exception_buf=', imread)
-        assert imread.called
+    # @patch('micropython.alloc_emergency_exception_buf')
+    # def test_load_image(self, imread):
+    #     print('alloc_emergency_exception_buf=', imread)
+    #     assert imread.called
 
 # ** @classmethod #setUpClass#  : 
 #  ----------------------------------------------:
@@ -52,14 +52,14 @@ class Test_Fun(unittest.TestCase):
         
         
 # ----------------------------------------------
-# ** @classmethod #tearDownClass# : 
+# ** @classmethod #tearDownClass# :
 #  ----------------------------------------------:
     @classmethod #tearDownClass# {{{
     def tearDownClass(self):
-        print("*"*33,"*"*33)
+        print("*"*33, "*"*33)
         print("tear down module")
         self.sd = None
-        print("*"*33,"*"*33)
+        print("*"*33, "*"*33)
 
 
 # ----------------------------------------------
@@ -123,7 +123,7 @@ class Test_Fun(unittest.TestCase):
 
 
 # ** ----------------------------------------------:
-# * def suite Init(): : 
+# * def suite Init(): :
 def suite_Init():
     suite = unittest.TestSuite()
     # suite.addTest(Test_Init('test_init1'))
@@ -140,13 +140,13 @@ def suite_Init():
 # ----------------------------------------------
 
 
-# * Test runer : 
+# * Test runer :
 # ----------------------------------------------
 # (compile " D:/Development/version-control/GitHub/Vadim/Tochil/main_test.py -k init")
 # (compile " python -m unittest D:/Development/version-control/GitHub/Vadim/Tochil/main_test.py ")
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    runner = unittest.TextTestRunner()
-    runner.run(suite_Init())
-    # unittest.main()
+    # runner = unittest.TextTestRunner()
+    # runner.run(suite_Init())
+    unittest.main()
 # * ----------------------------------------------:
