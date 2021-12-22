@@ -33,10 +33,10 @@ class Encoder:
         self.counter3 = 1000
         self.last_count = 0;
         # IRQ_RISING_FALLING = "IRQ_FALLING"
-        # self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin01)
-        # self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin02)
-        self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin01)
-        self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin02)
+        self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin01)
+        self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.callback_pin02)
+        # self.pin01.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin01)
+        # self.pin02.irq(trigger=pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=self.new_callback_pin02)
         self.timeout= timeout
         self._last_pin01 = False
         self._last_pin02 = False
