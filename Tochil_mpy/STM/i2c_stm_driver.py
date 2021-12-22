@@ -11,7 +11,7 @@ micropython.alloc_emergency_exception_buf(100)
 SLAVE_ADDRESS = 0x40
 PORT = 1
 BAUDRATE = 100000
-PINOUT01 =  pyb.Pin(pyb.Pin.cpu.C13, pyb.Pin.OUT)
+PINOUT01 = pyb.Pin(pyb.Pin.cpu.C13, pyb.Pin.OUT)
 
 
 #  ----------------------------------------------:
