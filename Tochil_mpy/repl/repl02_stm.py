@@ -7,18 +7,56 @@ from stm_main import
 mainloop()
 # -----------------------------------
 # * encoder stm :
+# enc_pin02 = pyb.Pin.board.PB2 # work
+# enc_pin01 = pyb.Pin.board.PB10 # not working
+# enc_pin01 = pyb.Pin.board.PA3 # Testing
+
 from stm_encod import *
 enc_pin02 = pyb.Pin.board.PB2
 enc_pin01 = pyb.Pin.board.PB10
 encoder = Encoder(enc_pin01, enc_pin02)
 encoder.get_data()
+encoder.counter3 = 1000
 
-def print_cheng(self, timeout = 1000): 
+def print_cheng( timeout = 1000): 
     encoder.timeout= timeout
     while True:
       if encoder.have_data() : print(encoder.get_data())
 
-print_cheng()
+encoder.print_cheng()
+
+# -----------------------------------
+# * test new callback encoder stm :
+from stm_encod import *
+enc_pin02 = pyb.Pin.board.PB2
+enc_pin01 = pyb.Pin.board.PB10
+encoder = Encoder(enc_pin01, enc_pin02)
+encoder.get_data()
+encoder.counter3 = 1000
+
+import pyb, machine
+led = machine.Pin(pyb.Pin.board.PC13, machine.Pin.OUT)
+
+def in_led(t):
+    led.value(0)
+    # pyb.delay(t)
+    utime.sleep_us(t)
+    led.value(1)
+    # pyb.delay(t)
+    utime.sleep_us(t)
+
+
+def print_cheng( timeout = 1000, steps = 1, ledt = 100): 
+    encoder.timeout= timeout
+    while True:
+        for var in range(steps * 1000):
+            in_led(ledt)
+        if encoder.have_data() : print(encoder.get_data())
+        encoder.gipo_checker()
+
+
+encoder.counter3 = 1000
+print_cheng( timeout = 1000, steps = 1, ledt = 1)
 
 # -----------------------------------
 # * encoder original:
@@ -37,17 +75,75 @@ def print_cheng(self):
 
 # -----------------------------------
 # * get_msg : 
+# -----------------------------------
 from i2c_stm_driver import *
 sd = I2C_com()
 sd.get_msg()
 
 
 # -----------------------------------
+# * LED : 
+# -----------------------------------
+import pyb, machine
+led = machine.Pin(pyb.Pin.board.PC13, machine.Pin.OUT)
+
+def in_led(t):
+    while True:
+        led.value(0)
+        pyb.delay(t)
+        led.value(1)
+        encoder.get_data()
+        pyb.delay(t)
+
+in_led(1000)
+
+led.value(0)
+
+
+
+# -----------------------------------
+# * Interapt 01: 
+# -----------------------------------
+t = Enc_exp(enc_pin01)
+t.in_led(1, 10)
+t.in_led(1000, 100)
+a = t.arg
+print("Arg = ", a)
+t.sume = 0
+t.in_led(1, 50)
+
+
+# -----------------------------------
+# * Interapt 02: 
+# -----------------------------------
+import pyb, machine
+
+testpin01 = pyb.Pin.cpu.B9
+test = pyb.Pin(testpin01, pyb.Pin.IN)
+def callback_testF(p):
+    print("Falling =", p)
+
+test_p= 1
+def callback_testR(p):
+    global tets_p 
+    test_p = p
+    print("Rising =", test_p)
+
+test.irq(trigger= pyb.Pin.IRQ_RISING, handler=callback_testR)
+# замыкание не видно видно отмыкание
+test.irq(trigger= pyb.Pin.IRQ_FALLING, handler=callback_testF)
+# test.irq(trigger= pyb.Pin.IRQ_RISING | pyb.Pin.IRQ_FALLING, handler=callback_testF)
+
+
+# -----------------------------------
 # * i2c_2s_send : 
+# -----------------------------------
 from i2c_stm_driver import *
 sd = I2C_com()
 sd.i2c_2s_send(5, "abc")
 sd.i2c_2s_send(5)
+
+
 # -----------------------------------
 # * print_in : 
 from i2c_stm_driver import *

@@ -2,6 +2,7 @@
 # * import block# :
 import unittest
 import sys
+import utime as time
 from unittest.mock import MagicMock, patch
 
 sys.modules['micropython'] = MagicMock()
@@ -32,7 +33,37 @@ class Test_Init(unittest.TestCase):
         # self.assertEqual( mw.temp_B, 14)
 
             				
+#  ----------------------------------------------:
+# ** test_t_find_pin : 
+#  ----------------------------------------------:
+    def test_t_find_pin(self):
+        self.assertEqual(t_find_pin(), True)
+
+
 # ----------------------------------------------
+# ** test_rutin_one : 
+#  ----------------------------------------------:
+    def test_rutin_one(self):
+        self.assertEqual(t_find_pin(), True)
+        self.assertEqual(call_test(1), None)
+
+
+# ----------------------------------------------
+# ** test_enc_exp : 
+# ----------------------------------------------
+    def test_enc_exp(self):
+        # enc_pin01 = pyb.Pin.board.PB2
+        # enc_pin02 = pyb.Pin.board.PB10
+        t = Enc_exp(enc_pin01)
+        self.assertEqual(t.sume, 0)
+        t.callback_testF(1)
+        self.assertEqual(t.sume, 1)
+        t.in_led(1000, 100, debug=True)
+        a = t.arg
+        print("Arg = ", a)
+
+
+#  ----------------------------------------------:
 # ** ----------------------------------------------:
 # * class Test_Fun(unittest.TestCase): : 
 # ** ----------------------------------------------:
@@ -81,6 +112,9 @@ class Test_Fun(unittest.TestCase):
         print(msg[2])
         msg = bytes(b'\x0A\x0A\x00\x0f')
         print(msg)
+        msg = bytes(b'\x0A\x19\x00\x0f')
+        cmd_rutin(msg)
+        print(msg)
         cmd_rutin(msg)
         # msg = bytes(b'\x0B\x64\x00\x0f')
         # print(msg)
@@ -90,6 +124,7 @@ class Test_Fun(unittest.TestCase):
 # ----------------------------------------------
 # ** def test_step_motor_rutine (self): : 
 # ----------------------------------------------
+    @unittest.skip("demonstrating skipping")
     def test_step_motor_rutine (self):
         msg = bytes(b'\x0A\x0A\x00\x0f')
         print(msg)
@@ -109,11 +144,11 @@ class Test_Fun(unittest.TestCase):
         msg = bytes(b'\x14\x0A\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        self.assertEqual([20, 10, 0, 0], rpi.msg_list[0])
+        self.assertEqual([20, 10, 3, 232], rpi.msg_list[0])
         msg = bytes(b'\x14\x64\x00\x0f')
         print(msg)
         cmd_rutin(msg)
-        self.assertEqual([20, 10, 0, 0], rpi.msg_list[1])
+        self.assertEqual([20, 10, 3, 232], rpi.msg_list[1])
 
 
 # ----------------------------------------------
@@ -129,31 +164,18 @@ class Test_Fun(unittest.TestCase):
         # self.assertEqual( result, ' New!\n test\n test!\n ')
 
 
-# ** def test_i2c_2s_send(self):
-    def test_i2c_2s_send(self):
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
-        self.sd.i2c_2s_send( )
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
-        # self.sd.i2c_exec( 10)
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, True )
-        # self.sd.i2c_exec( 13)
-        # self.assertEqual( self.sd.pinOut01.PIN_VALUE, False )
-
-
-
 # ** ----------------------------------------------:
 # * def suite Init(): : 
 def suite_Init():
     suite = unittest.TestSuite()
-    # suite.addTest(Test_Init('test_init1'))
-    # suite.addTest(Test_Fun('test_mainloop'))
+    suite.addTest(Test_Init('test_init1'))
+    suite.addTest(Test_Init('test_t_find_pin'))
+    suite.addTest(Test_Init('test_rutin_one'))
+    suite.addTest(Test_Fun('test_mainloop'))
     suite.addTest(Test_Fun('test_cmd_rutine'))
     suite.addTest(Test_Fun('test_encoder_rutine'))
-    # suite.addTest(Test_Fun('test_step_motor_rutine'))
     # infiniti loop
-    # suite.addTest(Test_Fun('test_i2c_2s_send'))
-    # suite.addTest(Test_Fun('test_print_in'))
-    # suite.addTest(Test_Fun('test_diode_com'))
+    suite.addTest(Test_Fun('test_step_motor_rutine'))
     return suite
 # ----------------------------------------------
 
@@ -166,5 +188,6 @@ if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     runner = unittest.TextTestRunner()
     runner.run(suite_Init())
+    # @unittest.skip("demonstrating skipping")
     # unittest.main()
 # * ----------------------------------------------:

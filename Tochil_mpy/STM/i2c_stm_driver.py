@@ -63,8 +63,10 @@ class I2C_com(object):
 # ----------------------------------------------
     def get_switch(self, byt = 4):
         try:
-          print("Start waiting byte")	
-          data = self.i2c.recv(1)
+          # print("Start waiting byte")	
+          # data = self.i2c.recv(1)
+          # i2c.send(b'123', timeout=2000)   # timeout after 2 seconds
+          data = self.i2c.recv(1, timeout=10 )
         except OSError as exc:
           # if exc.args[0] not in (5, 110):
             # 5 == EIO, occurs when master does a I2C bus scan

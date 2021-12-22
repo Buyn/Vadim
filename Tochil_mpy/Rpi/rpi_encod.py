@@ -44,7 +44,11 @@ class Encoder:
       while not self.is_ready():
          sleep(0.1)
       sleep(0.01)
-      msg = self.msg_data()
+      msg = None
+      while msg == None :
+         msg = self.msg_data()
+         sleep(0.01)
+         print("msg = ", msg)
       return self.msg_convert(msg[2], msg[3])
 
 
